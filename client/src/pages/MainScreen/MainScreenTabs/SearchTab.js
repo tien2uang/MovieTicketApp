@@ -1,6 +1,5 @@
 import {
     FlatList,
-    SafeAreaView,
     ScrollView,
     StatusBar,
     StyleSheet,
@@ -17,6 +16,7 @@ import FilmButton from '../../../components/MainScreenComponents/FilmButton';
 import SpidermanLogo from "../../../../assets/img/spider.png";
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 
@@ -25,6 +25,8 @@ const SearchTab = ()=>{
     const navigation = useNavigation();
     const route = useRoute();
     return (
+        <SafeAreaView>
+
         <View style= {styles.background}>
             <ScrollView>
                 <CustomText textValue ={"Search Tab"}/>
@@ -32,6 +34,7 @@ const SearchTab = ()=>{
             
 
         </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({

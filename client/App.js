@@ -10,7 +10,7 @@ import axios from 'axios';
 
 
 import {
-  SafeAreaView,
+
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -18,6 +18,7 @@ import {
   useColorScheme,
   View,
   AsyncStorage,
+  Image,
   Button
 } from 'react-native';
 
@@ -39,45 +40,46 @@ import { AppContextProvider } from './src/context/AppContext';
 import Payment from './src/pages/Payment/Payment';
 import Wishlist from './src/pages/Wishlist/Wishlist';
 import Profile from './src/pages/Profile/Profile';
-
+import SelectCreditCard from './src/pages/SelectCreditCard/SelectCreditCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const Stack = createStackNavigator();
 
 function Stacks() {
   return (
     <Stack.Navigator
-    screenOptions={{headerShown:false}}
-    initialRouteName="SignIn"
-      >
+      screenOptions={{ headerShown: false }}
+      initialRouteName="SignIn"
+    >
       <Stack.Screen
         name="SignIn"
         component={SignIn}
-        
+
       />
       <Stack.Screen
         name="SignUp"
         component={SignUp}
-        
+
       />
       <Stack.Screen
         name="ForgotPassword"
         component={ForgotPassword}
-        
+
       />
-      
+
       <Stack.Screen
         name="ConfirmRegister"
         component={ConfirmRegister}
-        
+
       />
       <Stack.Screen
         name="MainScreen"
         component={MainScreen}
-        
+
       />
       <Stack.Screen
         name="MovieDetail"
         component={MovieDetail}
-        
+
       />
       <Stack.Screen
         name='TransactionDetail'
@@ -103,74 +105,71 @@ function Stacks() {
         name='Profile'
         component={Profile}
       />
+      <Stack.Screen
+        name='SelectCreditCard'
+        component={SelectCreditCard}
+      />
 
-      
 
-     
+
+
     </Stack.Navigator>
   );
 }
 
 function App() {
-  
-  const axiosOptions={
-    headers: {
-        "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlF1YW5nTlQiLCJlbWFpbCI6ImR1Y2hlMzQ1QGdtYWlsLmNvbSIsImlhdCI6MTY3OTM5MTc4NSwiZXhwIjoxNjc5NDc4MTg1fQ.lH4lf-7PUK6c0Ta0N4nw-nFWFBzQAqGoAYFueIeIPBE"
-    }
-  } 
 
-  const handleSubmit =async ()=>{
-    
-    const data ={
+  const axiosOptions = {
+    headers: {
+      "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlF1YW5nTlQiLCJlbWFpbCI6ImR1Y2hlMzQ1QGdtYWlsLmNvbSIsImlhdCI6MTY3OTM5MTc4NSwiZXhwIjoxNjc5NDc4MTg1fQ.lH4lf-7PUK6c0Ta0N4nw-nFWFBzQAqGoAYFueIeIPBE"
+    }
+  }
+
+  const handleSubmit = async () => {
+
+    const data = {
       username: "QuangNT",
       email: "duche345@gmail.com",
       password: "lolpatther",
-      isVerified:false,
-      phone:"0932134123"
+      isVerified: false,
+      phone: "0932134123"
     }
     try {
-      const res= await axios.post("https://7f72-2402-800-62d2-d261-52a-e9ee-d618-bc0a.ap.ngrok.io/api/auth/signin",data,axiosOptions);
+      const res = await axios.post("https://7f72-2402-800-62d2-d261-52a-e9ee-d618-bc0a.ap.ngrok.io/api/auth/signin", data, axiosOptions);
       console.log(res.data);
-      
-      
-    } catch(err){
+
+
+    } catch (err) {
       console.log(err)
     }
   }
   return (
 
-      
-       <AppContextProvider>
 
-        <SafeAreaProvider>
-          
+    <AppContextProvider>
+
+      <SafeAreaProvider>
+
         <NavigationContainer>
-          
 
-            <Stacks/>
-            {/* <View>
-            <Button
-            onPress={handleSubmit}
-            title="Learn More"
-            color="#841584"
-            
-            />
-            </View> */}
-        
+
+          <Stacks />
+
+
         </NavigationContainer>
-        </SafeAreaProvider>
-       </AppContextProvider> 
-      
- 
+      </SafeAreaProvider>
+    </AppContextProvider>
+
+
   );
 }
 
 const styles = StyleSheet.create({
   global: {
-  
+
 
   }
-  
+
 });
 
 export default App;

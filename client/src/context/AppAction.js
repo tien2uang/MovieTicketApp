@@ -1,20 +1,20 @@
-export const LoginStart = (user) => ({
+export const LoginStart = (payload) => ({
     type: "LOGIN_START",
 });
 
-export const LoginSuccess = (user) => ({
+export const LoginSuccess = (payload) => ({
     type: "LOGIN_SUCCESS",
-    payload: user,
+    payload: payload,
 });
 
-export const UpdateSuccess = (user) => ({
+export const UpdateSuccess = (payload) => ({
     type: "UPDATE_SUCCESS",
-    payload: user,
+    payload: payload,
 });
 
-export const LoginFailure = (err) => ({
+export const LoginFailure = (payload) => ({
     type: "LOGIN_FAILURE",
-    payload: err,
+    payload: payload,
 });
 
 export const SignUpStart = () => ({
@@ -29,18 +29,21 @@ export const SignUpFailure = (err) => ({
     payload: err,
 
 })
-export const LogoutStart =() => ({
-    type:"LOGOUT_START"
+export const LogoutStart = () => ({
+    type: "LOGOUT_START"
 })
-export const BookingStart=()=>({
-    type:"BOOKING_START"
+export const BookingStart = () => ({
+    type: "BOOKING_START"
 })
-export const SelectSeatSuccess=()=>({
-    type:"SELECT_SEAT_SUCCESS"
+export const SelectSeatSuccess = () => ({
+    type: "SELECT_SEAT_SUCCESS"
 })
-export const PaySuccess=()=>({
-    type:"PAY_SUCCESS"
+export const PaySuccess = () => ({
+    type: "PAY_SUCCESS"
 })
-export const BookingComplete=()=>({
-    type:"BOOKING_COMPLETE"
+export const BookingComplete = () => ({
+    type: "BOOKING_COMPLETE"
+})
+export const LogOut = () => ({
+    type: "LOG_OUT"
 })

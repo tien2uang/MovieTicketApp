@@ -23,13 +23,13 @@ import { useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { SelectSeatSuccess } from '../../context/AppAction';
 import { SafeAreaView } from 'react-native-safe-area-context';
-const SelectSeat = () => {
+const PromoDetail = () => {
     const { dispatch } = useContext(AppContext);
     const navigation = useNavigation();
     const route = useRoute();
     const item = route.params.item;
     const handleSubmit = () => {
-        // dispatch(SelectSeatSuccess());
+        // dispatch(PromoDetailSuccess());
         navigation.navigate("BookingDetail", { item: item });
     }
     return (
@@ -37,7 +37,7 @@ const SelectSeat = () => {
 
             <View style={styles.background}>
                 <ScrollView>
-                    <CustomText textValue={"Select Seat"} />
+                    <CustomText textValue={"Promo Detail"} />
                     <Button
                         title="Back"
                         onPress={() => {
@@ -60,12 +60,7 @@ const SelectSeat = () => {
                         }}
                     />
                     <CustomText textValue={"Cancel order"} />
-                    <Button
-                        title="Cancel"
-                        onPress={() => {
-                            navigation.navigate("MainScreen");
-                        }}
-                    />
+
                 </ScrollView>
 
 
@@ -94,4 +89,4 @@ const styles = StyleSheet.create({
 
 
 })
-export default SelectSeat;
+export default PromoDetail;

@@ -1,6 +1,6 @@
 import {
     FlatList,
-    SafeAreaView,
+    
     ScrollView,
     StatusBar,
     StyleSheet,
@@ -21,7 +21,7 @@ import { useRoute } from '@react-navigation/native';
 import { useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { BookingComplete } from '../../context/AppAction';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const Wishlist = ()=>{

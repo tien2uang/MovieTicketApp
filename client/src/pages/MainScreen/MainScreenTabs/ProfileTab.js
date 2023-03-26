@@ -1,6 +1,6 @@
 import {
     FlatList,
-    SafeAreaView,
+    
     ScrollView,
     StatusBar,
     StyleSheet,
@@ -18,12 +18,15 @@ import FilmButton from '../../../components/MainScreenComponents/FilmButton';
 import SpidermanLogo from "../../../../assets/img/spider.png";
 import { useNavigation } from '@react-navigation/native';
 import {useRoute} from "@react-navigation/native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 
 const ProfileTab = ()=>{
     const navigation = useNavigation();
     return (
+        <SafeAreaView>
+
         <View style= {styles.background}>
             
             <ScrollView>
@@ -55,7 +58,7 @@ const ProfileTab = ()=>{
                 <Button
                 title="Logout"
                 onPress={() => {
-                navigation.goBack();
+                navigation.navigate("SignIn");
                 }}
                 />
 
@@ -63,6 +66,7 @@ const ProfileTab = ()=>{
             
 
         </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
