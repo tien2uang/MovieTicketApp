@@ -58,7 +58,7 @@ function Stacks() {
       <Stack.Screen name="SelectSeat" component={SelectSeat} />
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="Wishlist" component={Wishlist} />
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Profile_" component={Profile} />
     </Stack.Navigator>
   );
 }
@@ -81,7 +81,7 @@ function App() {
     };
     try {
       const res = await axios.post(
-        "https://7f72-2402-800-62d2-d261-52a-e9ee-d618-bc0a.ap.ngrok.io/api/auth/signin",
+        "https://1675-118-71-160-87.ap.ngrok.io/api/auth/signin",
         data,
         axiosOptions
       );
