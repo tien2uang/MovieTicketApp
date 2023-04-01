@@ -29,6 +29,7 @@ const CreditCard = () => {
 
   const data = ["123", "112321", "2121"];
   const price = ["1212", "213213", "12323"];
+  const test = [];
 
   useEffect(() => {
     const getCreditCard = async () => {
