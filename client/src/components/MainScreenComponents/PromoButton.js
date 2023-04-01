@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TextInput, Button, Pressable } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 
-const FilmButton = ({ onPress, imgSrc }) => {
+const PromoButton = ({ onPress, imgSrc }) => {
     const navigation = useNavigation();
     return (
         <Pressable
@@ -13,7 +13,7 @@ const FilmButton = ({ onPress, imgSrc }) => {
             onPress={onPress}
         >
             <Image
-                style={{ width: 160, height: 240 }}
+                style={{ width: 320, height: 120 }}
                 source={imgSrc}
             />
         </Pressable>
@@ -22,8 +22,8 @@ const FilmButton = ({ onPress, imgSrc }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 160,
-        height: 240,
+        width: 320,
+        height: 120,
         borderRadius: 15,
         marginRight: 20,
         overflow: 'hidden'
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default FilmButton;
+export default PromoButton;

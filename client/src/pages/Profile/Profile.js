@@ -14,80 +14,120 @@ import CustomText from "../../components/CustomText";
 import UserLogo from "../../../assets/img/UserLogo.png";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
+import axios from "axios";
+import { API_HOST, token } from "@env";
 
 const Profile = () => {
-  const { dispatch } = useContext(AppContext);
+  // const { token } = useContext(AppContext);
   const navigation = useNavigation();
-  // const route = useRoute();
-  // #CDCDCD
-  console.log("render component");
 
-  const user = {
-    username: "Quyet",
-    password: "123456",
-    email: "quyet@gmail.com",
-    phone: "123456789",
-    creditCard1: "13123",
-    creditCard2: null,
+  const [user, setUser] = useState();
+  const [username, setUsername] = useState("-1");
+  const [password, setPassword] = useState(-1);
+  const [phone, setphone] = useState(-1);
+
+  // #CDCDCD
+  const axiosOptions = {
+    headers: {
+      "x-access-token": token,
+    },
   };
 
-  const [username, setUsername] = useState(user.username);
-  const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState(user.password);
-  const [phone, setphone] = useState(user.phone);
-  const [creditCard1, setCreditCard1] = useState(user.creditCard1);
-  const [creditcard2, setcreditcard2] = useState(user.creditCard2);
-  console.log(user.creditCard2);
+  useEffect(() => {
+    const getInfoUser = async () => {
+      try {
+        const res = await axios.get(
+          `${API_HOST}/api/users/profile`,
+          axiosOptions
+        );
+        const Response = res.data;
+        console.log(Response);
+        setUser(Response);
+      } catch (error) {
+        let response = error.response.data;
+        console.log(response);
+      }
+    };
+    getInfoUser();
+  }, []);
 
   const handleUpdateUsername = async () => {
-    if (username !== user.username) {
+    if (username !== user.username && username != "-1") {
       console.log(username);
+      const data = {
+        username: username,
+      };
+      console.log(data);
+      try {
+        console.log("fetch");
+        const res = await axios.put(
+          `${API_HOST}/api/users/edit/username`,
+          data,
+          axiosOptions
+        );
+        const Response = res.data;
+        console.log(Response);
+        alert("Thay đổi username thành công");
+      } catch (error) {
+        let response = error.response.data;
+        console.log(response);
+      }
     } else {
-      console.log("username not change");
-    }
-  };
-
-  const handleUpdateEmail = async () => {
-    if (email !== user.email) {
-      console.log(email);
-    } else {
-      alert("email not change");
+      alert("username chưa thay đổi");
     }
   };
 
   const handleUpdatePassword = async () => {
-    if (password !== user.password) {
+    if (password !== user.password && password != -1) {
       console.log(password);
+      const data = {
+        password: password,
+      };
+      console.log(data);
+      try {
+        console.log("fetch");
+        const res = await axios.post(
+          `${API_HOST}/api/users/changepassword`,
+          data,
+          axiosOptions
+        );
+        const Response = res.data;
+        console.log(Response);
+        alert("Thay đổi password thành công");
+      } catch (error) {
+        let response = error.response.data;
+        console.log(response);
+      }
     } else {
       alert("Password not change");
     }
   };
 
   const handleUpdatePhone = async () => {
-    if (phone !== user.phone) {
+    if (phone !== user.phone && phone != -1) {
       console.log(phone);
+      const data = {
+        phone: phone,
+      };
+      console.log(data);
+      try {
+        console.log("fetch");
+        const res = await axios.put(
+          `${API_HOST}/api/users/edit/phone`,
+          data,
+          axiosOptions
+        );
+        const Response = res.data;
+        console.log(Response);
+        alert("Thay đổi số điện thoại thành công");
+      } catch (error) {
+        let response = error.response.data;
+        console.log(response);
+      }
     } else {
       alert("phone not change");
-    }
-  };
-
-  const handleUpdateCreditCard1 = async () => {
-    if (creditCard1 !== user.creditCard1) {
-      console.log(creditCard1);
-    } else {
-      alert("CreditCard1 not change");
-    }
-  };
-
-  const handleUpdateCreditCard2 = async () => {
-    if (creditcard2 == null) {
-      console.log("credit card null");
-    } else if (creditcard2 !== user.creditCard2) {
-      console.log(creditcard2);
-    } else {
-      alert("CreditCard2 not change");
     }
   };
 
@@ -106,27 +146,12 @@ const Profile = () => {
           </View>
 
           <View style={styles.body}>
-            {/* <View style={styles.item}>
-              <CustomText textValue={"username"} />
-              <TextInput
-                style={styles.username}
-                placeholder=""
-                // value={user.username}
-                // defaultValue={user.username}
-                autoCapitalize="characters"
-                // maxLength={6}
-                // keyboardType="number-pad" 
-                // email
-                // secureTextEntry={true}
-              />
-            </View> */}
-
             <View style={styles.item}>
               <Text style={styles.text}>Username</Text>
               <TextInput
                 onChangeText={(text) => setUsername(text)}
                 placeholder="Username"
-                defaultValue={user.username}
+                defaultValue={user?.username}
                 style={styles.inputText}
               />
               <TouchableOpacity onPress={handleUpdateUsername}>
@@ -138,14 +163,12 @@ const Profile = () => {
               <Text style={styles.text}>Email</Text>
               <TextInput
                 onChangeText={(text) => setEmail(text)}
+                editable={false}
                 placeholder="Email"
-                defaultValue={user.email}
+                defaultValue={user?.email}
                 style={styles.inputText}
                 keyboardType="email-address"
               />
-              <TouchableOpacity onPress={handleUpdateEmail}>
-                <Text style={styles.update}>Update</Text>
-              </TouchableOpacity>
             </View>
 
             <View style={styles.item}>
@@ -153,9 +176,9 @@ const Profile = () => {
               <TextInput
                 onChangeText={(text) => setPassword(text)}
                 placeholder="Password"
-                defaultValue={user.password}
+                // defaultValue={user?.password}
+                defaultValue="123456"
                 style={styles.inputText}
-                // keyboardType="visible-password"assads
                 secureTextEntry={true}
               />
               <TouchableOpacity onPress={handleUpdatePassword}>
@@ -168,7 +191,7 @@ const Profile = () => {
               <TextInput
                 onChangeText={(text) => setphone(text)}
                 placeholder="Phone"
-                defaultValue={user.phone}
+                defaultValue={user?.phone}
                 style={styles.inputText}
                 keyboardType="number-pad"
               />
@@ -176,42 +199,18 @@ const Profile = () => {
                 <Text style={styles.update}>Update</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.item}>
-              <Text style={styles.text}>Credit card 1</Text>
-              <TextInput
-                onChangeText={(text) => setCreditCard1(text)}
-                placeholder="Credit card 1"
-                defaultValue={user.creditCard1}
-                style={styles.inputText}
-                keyboardType="number-pad"
-              />
-              <TouchableOpacity onPress={handleUpdateCreditCard1}>
-                <Text style={styles.update}>
-                  {user.creditCard1 == null ? "Add" : "Update"}
-                </Text>
-              </TouchableOpacity>
-            </View>
 
-            <View style={styles.item}>
-              <Text style={styles.text}>Credit card 2</Text>
-              <TextInput
-                onChangeText={(text) => setcreditcard2(text)}
-                placeholder="Credit card 2"
-                defaultValue={user.creditCard2}
-                style={styles.inputText}
-                keyboardType="number-pad"
-              />
-              <TouchableOpacity onPress={handleUpdateCreditCard2}>
-                <Text style={styles.update}>
-                  {user.creditCard2 == null ? "Add" : "Update"}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.creditCard}
+              onPress={() => navigation.navigate("CreditCardDetail")}
+            >
+              <Text style={styles.creditCardText}>Credit card</Text>
+              <Text style={styles.icon}>icon</Text>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity
             onPress={() => {
-              console.log("bakc");
               navigation.goBack();
             }}
             // title="bakc"
@@ -240,11 +239,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#0F0F29",
     width: "100%",
     height: "100%",
-    // flex: 1,
   },
   header: {
     marginTop: 40,
-    // backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -277,6 +274,26 @@ const styles = StyleSheet.create({
     right: 0,
     top: -50,
     opacity: 0.5,
+  },
+  creditCard: {
+    backgroundColor: "#37474F",
+    borderRadius: 20,
+    height: 50,
+    marginTop: 20,
+  },
+  creditCardText: {
+    fontSize: 20,
+    fontWeight: 400,
+    color: "white",
+    position: "absolute",
+    top: 10,
+    left: 10,
+  },
+  icon: {
+    color: "white",
+    position: "absolute",
+    top: 15,
+    right: 10,
   },
 });
 export default Profile;

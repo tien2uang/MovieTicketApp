@@ -1,11 +1,45 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../../context/AppContext";
+import axios from "axios";
+import { API_HOST, token } from "@env";
 
 const WishlistItem = (props) => {
   const navigation = useNavigation();
+  // const { token } = useContext(AppContext);
+  const movie = props.movies;
+  const [star, setStar] = useState(true);
 
-  const movie = props.movieInfo;
+  const axiosOptions = {
+    headers: {
+      "x-access-token": token,
+    },
+  };
+  // console.log(star);
+  const handlePressStar = async () => {
+    setStar(!star);
+    if (star) {
+      const data = {
+        movieID: movie.movieID,
+      };
+      try {
+        console.log("fetch");
+        const res = await axios.put(
+          `${API_HOST}/api/users/wishlist/delete`,
+          data,
+          axiosOptions
+        );
+        const Response = res.data;
+        console.log(Response);
+        alert("Xóa phim khỏi wishlist thành công");
+      } catch (error) {
+        let response = error.response.data;
+        console.log(response);
+      }
+    }
+  };
+
   return (
     <View>
       <Pressable
@@ -20,8 +54,13 @@ const WishlistItem = (props) => {
         <Text style={styles.director}>Director: {movie.director}</Text>
         <Text style={styles.info}>Category: {movie.category}</Text>
 
-        <Text style={styles.price}>{movie.ticket_count}$</Text>
-        <Text style={styles.icon}>star</Text>
+        <Text style={styles.price}>{movie.ticketCount}$</Text>
+        <Text
+          onPress={handlePressStar}
+          style={star ? styles.star : styles.notStar}
+        >
+          star
+        </Text>
       </Pressable>
     </View>
   );
@@ -39,7 +78,7 @@ const styles = StyleSheet.create({
   nameOfFilm: {
     fontWeight: 400,
     color: "white",
-    fontSize: 25,
+    fontSize: 20,
   },
   info: {
     color: "white",
@@ -58,11 +97,18 @@ const styles = StyleSheet.create({
     fontWeight: 300,
     fontSize: 25,
   },
-  icon: {
+  star: {
     position: "absolute",
     right: 0,
     top: 50,
-    color: "white",
     fontSize: 20,
+    color: "white",
+  },
+  notStar: {
+    position: "absolute",
+    right: 0,
+    top: 50,
+    fontSize: 20,
+    color: "blue",
   },
 });

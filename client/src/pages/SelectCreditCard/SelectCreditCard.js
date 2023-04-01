@@ -23,33 +23,26 @@ import { useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { SelectSeatSuccess } from '../../context/AppAction';
 import { SafeAreaView } from 'react-native-safe-area-context';
-const SelectSeat = () => {
+const SelectCreditCard = () => {
     const { dispatch } = useContext(AppContext);
     const navigation = useNavigation();
     const route = useRoute();
     const item = route.params.item;
     const handleSubmit = () => {
         // dispatch(SelectSeatSuccess());
-        navigation.navigate("BookingDetail", { item: item });
+        navigation.navigate("SelectSeat", { item: item });
     }
     return (
         <SafeAreaView>
 
             <View style={styles.background}>
                 <ScrollView>
-                    <CustomText textValue={"Select Seat"} />
+                    <CustomText textValue={"Select Credit Card"} />
                     <Button
                         title="Back"
                         onPress={() => {
                             console.log('click')
                             navigation.goBack();
-                        }}
-                    />
-                    <Button
-                        title="Select Credit Card"
-                        onPress={() => {
-                            console.log('click')
-                            navigation.navigate("SelectCreditCard", { item: item })
                         }}
                     />
 
@@ -94,4 +87,4 @@ const styles = StyleSheet.create({
 
 
 })
-export default SelectSeat;
+export default SelectCreditCard;

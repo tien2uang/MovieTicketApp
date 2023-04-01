@@ -9,7 +9,6 @@ import React, { useEffect } from "react";
 import axios from "axios";
 
 import {
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -17,6 +16,7 @@ import {
   useColorScheme,
   View,
   AsyncStorage,
+  Image,
   Button,
 } from "react-native";
 
@@ -37,14 +37,16 @@ import { AppContextProvider } from "./src/context/AppContext";
 import Payment from "./src/pages/Payment/Payment";
 import Wishlist from "./src/pages/Wishlist/Wishlist";
 import Profile from "./src/pages/Profile/Profile";
-
+import SelectCreditCard from "./src/pages/SelectCreditCard/SelectCreditCard";
+import { SafeAreaView } from "react-native-safe-area-context";
+import CreditCard from "./src/pages/Profile/CreditCard";
 const Stack = createStackNavigator();
 
 function Stacks() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="SignIn"
+      initialRouteName="MainScreen"
     >
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
@@ -58,7 +60,9 @@ function Stacks() {
       <Stack.Screen name="SelectSeat" component={SelectSeat} />
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="Wishlist" component={Wishlist} />
-      <Stack.Screen name="Profile_" component={Profile} />
+      <Stack.Screen name="ProfileScreen" component={Profile} />
+      <Stack.Screen name="SelectCreditCard" component={SelectCreditCard} />
+      <Stack.Screen name="CreditCardDetail" component={CreditCard} />
     </Stack.Navigator>
   );
 }
@@ -81,7 +85,7 @@ function App() {
     };
     try {
       const res = await axios.post(
-        "https://1675-118-71-160-87.ap.ngrok.io/api/auth/signin",
+        "https://7f72-2402-800-62d2-d261-52a-e9ee-d618-bc0a.ap.ngrok.io/api/auth/signin",
         data,
         axiosOptions
       );
@@ -95,14 +99,6 @@ function App() {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stacks />
-          {/* <View>
-            <Button
-            onPress={handleSubmit}
-            title="Learn More"
-            color="#841584"
-            
-            />
-            </View> */}
         </NavigationContainer>
       </SafeAreaProvider>
     </AppContextProvider>

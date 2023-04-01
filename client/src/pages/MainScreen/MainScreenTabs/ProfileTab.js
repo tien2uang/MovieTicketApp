@@ -1,67 +1,52 @@
 import {
-  FlatList,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
   Button,
   Image,
   TouchableOpacity,
 } from "react-native";
-import CustomButton from "../../../components/CustomButton";
-import CustomText from "../../../components/CustomText";
-import IconButton from "../../../components/IconButton";
-import NavigationBar from "../../../components/NavigationBar";
-import UserLogo from "../../../../assets/img/UserLogo.png";
-import FilmButton from "../../../components/MainScreenComponents/FilmButton";
-import SpidermanLogo from "../../../../assets/img/spider.png";
+
 import { useNavigation } from "@react-navigation/native";
-import { useRoute } from "@react-navigation/native";
+import { useContext, useState, useEffect } from "react";
+import { AppContext } from "../../../context/AppContext";
+import axios from "axios";
+import { API_HOST, token } from "@env";
 
 const ProfileTab = () => {
+  // const { token } = useContext(AppContext);
   const navigation = useNavigation();
-  const linkImg = "https://goeco.link/lWGWM";
+  const axiosOptions = {
+    headers: {
+      "x-access-token": token,
+    },
+  };
+
+  const [user, setUser] = useState();
+  console.log(user);
+  console.log(token);
+
+  useEffect(() => {
+    const getInfoUser = async () => {
+      try {
+        const res = await axios.get(
+          `${API_HOST}/api/users/profile`,
+          axiosOptions
+        );
+        const Response = res.data;
+        console.log(Response);
+        setUser(Response);
+      } catch (error) {
+        let response = error.response.data;
+        console.log(response);
+      }
+    };
+    getInfoUser();
+  }, []);
+
   return (
     <SafeAreaView style={styles.background}>
-      {/* <ScrollView>
-        <Button
-          title="Back"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <CustomText textValue={"Profile Tab"} />
-        <Button
-          title="Profile"
-          onPress={() => {
-            console.log("click profile");
-            navigation.navigate("Profile_");
-          }}
-        />
-        <Button
-          title="Payment"
-          onPress={() => {
-            navigation.navigate("Payment");
-          }}
-        />
-        <Button
-          title="Wishlist"
-          onPress={() => {
-            navigation.navigate("Wishlist");
-          }}
-        />
-        <Button
-          title="Logout"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <Text style={{ color: "white" }}>test</Text>
-      </ScrollView> */}
-
       <View style={styles.header}>
         {/* <Image source={{ uri: linkImg }} style={styles.img} /> */}
         <Image
@@ -69,8 +54,8 @@ const ProfileTab = () => {
           style={styles.img}
         />
         <View style={styles.textwrap}>
-          <Text style={styles.name}>Quyết Nguyễn Thế</Text>
-          <Text style={styles.email}>quyetnguyenthe05@gmail.com</Text>
+          <Text style={styles.name}>{user?.username}</Text>
+          <Text style={styles.email}>{user?.email}</Text>
         </View>
       </View>
 
@@ -80,8 +65,7 @@ const ProfileTab = () => {
           <TouchableOpacity>
             <Text
               onPress={() => {
-                // console.log("click profile");
-                navigation.navigate("Profile_");
+                navigation.navigate("ProfileScreen");
               }}
               style={styles.item}
             >
@@ -129,12 +113,10 @@ const ProfileTab = () => {
 const styles = StyleSheet.create({
   background: {
     backgroundColor: "#0F0F29",
-    // width: "100%",
-    // height: "100%",
+
     flex: 1,
   },
 
-  // header
   header: {
     marginTop: 60,
     paddingLeft: 30,

@@ -10,39 +10,41 @@ import CustomButton from "../../components/CustomButton";
 import CustomText from "../../components/CustomText";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import PaymentItem from "./PaymentItem";
+import axios from "axios";
+import { API_HOST } from "@env";
 
 const Payment = () => {
-  const { dispatch } = useContext(AppContext);
+  const { token } = useContext(AppContext);
   const navigation = useNavigation();
-  const data = [
-    {
-      movieID: 1,
-      title: "The matrix",
-      seat: "A22",
-      date: "25/04/2024",
-      theaterName: "MegaPlex",
-      price: 120,
+  const axiosOptions = {
+    headers: {
+      "x-access-token":
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlF1eWV0IiwiZW1haWwiOiIyMDAyMDQ2N0B2bnUuZWR1LnZuIiwiaWF0IjoxNjgwMzY0OTM5LCJleHAiOjE2ODA0NTEzMzl9.XXZJj2AKx2i1nw_T0B-j5VzspvJDlm_sCLpe9N0fuy4",
     },
-    {
-      movieID: 2,
-      title: "The matrix 2",
-      seat: "A01",
-      date: "25/03/2024",
-      theaterName: "MegaPlex",
-      price: 120,
-    },
-    {
-      movieID: 3,
-      title: "The matrix 3",
-      seat: "A30",
-      date: "25/03/2024",
-      theaterName: "MegaPlex",
-      price: 120,
-    },
-  ];
+  };
+
+  const [payment, setPayment] = useState();
+
+  console.log(payment);
+  useEffect(() => {
+    const getPaymentHistory = async () => {
+      try {
+        const res = await axios.get(
+          `${API_HOST}/api/users/booking/history`,
+          axiosOptions
+        );
+        const Response = res.data;
+        setPayment(Response);
+      } catch (error) {
+        let response = error.response.data;
+        console.log(response);
+      }
+    };
+    getPaymentHistory();
+  }, []);
 
   return (
     <SafeAreaView>
@@ -54,7 +56,7 @@ const Payment = () => {
           </View>
 
           <View style={styles.body}>
-            {data.map((item, index) => {
+            {payment?.map((item, index) => {
               return <PaymentItem key={index} movieInfo={item} />;
             })}
           </View>
