@@ -23,63 +23,22 @@ const CreditCard = () => {
   };
 
   const [creditCardList, setCreditCardList] = useState([]);
-  const [balance, setBalance] = useState();
 
   const [creditCard, setCreditCard] = useState(-1);
   const [addCreditCard, setAddCreditCard] = useState(false);
   const [edit, setEdit] = useState(false);
 
-  console.log(creditCardList);
-  console.log(balance);
-
-  useEffect(() => {
-    const getCreditCard = async () => {
-      try {
-        const res = await axios.get(
-          `${API_HOST}/api/users/credit/get`,
-          axiosOptions
-        );
-        const Response = res.data.credit_card;
-        setCreditCardList(Response);
-        console.log(Response);
-
-        // const balanceResult = await Promise.all(
-        //   Response.map((numberCard) => {
-        //     const data = {
-        //       credit_card_number: numberCard,
-        //     };
-        //     console.log(data);
-        //     const res = axios.get(
-        //       `${API_HOST}/api/users/balance/`,
-        //       data,
-        //       axiosOptions
-        //     );
-        //     console.log(res);
-        //     return res.data;
-        //   })
-        // );
-      } catch (error) {
-        let response = error.response.data;
-        console.log(response);
-      }
-    };
-    getCreditCard();
-  }, []);
-
   useEffect(() => {
     const getBalance = async () => {
       try {
-        const data = {
-          credit_card_number: "12345",
-        };
-        console.log(data);
         const result = await axios.get(
           `${API_HOST}/api/users/balance`,
-          data,
           axiosOptions
         );
-        console.log(result);
+        console.log(result.data);
+        setCreditCardList(result.data);
       } catch (error) {
+        console.log("fetch looix");
         let response = error.response.data;
         console.log(response);
       }
@@ -166,13 +125,13 @@ const CreditCard = () => {
                     <Text style={styles.text}>Credit card {index + 1}</Text>
                     <TextInput
                       onChangeText={(text) => setCreditCard(text)}
-                      defaultValue={item}
+                      defaultValue={item.credit_card_number}
                       style={styles.inputText}
                       keyboardType="number-pad"
                     />
                     <TouchableOpacity
                       onPress={() => {
-                        handleUpdateCreditCard(item);
+                        handleUpdateCreditCard(item.credit_card_number);
                       }}
                     >
                       <Text style={styles.update}>update</Text>
@@ -201,7 +160,7 @@ const CreditCard = () => {
                       <Text
                         style={{ color: "white", fontSize: 15, marginTop: 15 }}
                       >
-                        {item}
+                        {item.credit_card_number}
                       </Text>
                       <Text
                         style={{
@@ -212,7 +171,7 @@ const CreditCard = () => {
                           fontSize: 15,
                         }}
                       >
-                        {/* {price[index]} $ */} đag fix bug...
+                        {item.balance}
                       </Text>
                       {/* <TouchableOpacity
                         onPress={() => {
