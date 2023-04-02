@@ -13,8 +13,8 @@ const PaymentItem = (props) => {
     },
   };
   const movie = props.movieInfo;
-  const [movieDetail, setMoiveDetail] = useState({});
-  const [theater, setTheater] = useState({});
+  const [movieDetail, setMoiveDetail] = useState();
+  const [theater, setTheater] = useState();
 
   console.log(movieDetail);
   console.log(theater);
@@ -44,8 +44,8 @@ const PaymentItem = (props) => {
           `${API_HOST}/api/theaters/${theaterID}`,
           axiosOptions
         );
-        // console.log("movie detail", movieDetail.data);
-        // console.log("theater detail", theater.data);
+        console.log("movie detail", movieDetail.data);
+        console.log("theater detail", theater.data);
         setMoiveDetail(movieDetail.data);
         setTheater(theater.data);
       } catch (error) {

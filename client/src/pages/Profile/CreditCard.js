@@ -22,15 +22,8 @@ const CreditCard = () => {
     },
   };
 
-  const test = {
-    headers: {
-      "x-access-token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlF1eWV0IiwiZW1haWwiOiIyMDAyMDQ2N0B2bnUuZWR1LnZuIiwiaWF0IjoxNjgwNDMwNjYwLCJleHAiOjE2ODA1MTcwNjB9.c41UQ10VpiI8jABVzqNZmlWgnoGP2-CQ8RM60Ocqw9U",
-    },
-  };
-
   const [creditCardList, setCreditCardList] = useState([]);
-  const [balance, setBalance] = useState({});
+  const [balance, setBalance] = useState();
 
   const [creditCard, setCreditCard] = useState(-1);
   const [addCreditCard, setAddCreditCard] = useState(false);
@@ -70,7 +63,7 @@ const CreditCard = () => {
         console.log(response);
       }
     };
-    // getCreditCard();
+    getCreditCard();
   }, []);
 
   useEffect(() => {

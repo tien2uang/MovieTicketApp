@@ -24,8 +24,8 @@ const ProfileTab = () => {
   };
 
   const [user, setUser] = useState({});
-  console.log(user);
   console.log(token);
+  console.log(user);
 
   useEffect(() => {
     const getInfoUser = async () => {

@@ -34,6 +34,7 @@ const Profile = () => {
       "x-access-token": token,
     },
   };
+  console.log(user);
 
   useEffect(() => {
     const getInfoUser = async () => {
