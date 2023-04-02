@@ -3,17 +3,21 @@ import React from "react";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
-import { API_HOST } from "@env";
+import { API_HOST, token } from "@env";
 
 const PaymentItem = (props) => {
-  const { token } = useContext(AppContext);
+  // const { token } = useContext(AppContext);
   const axiosOptions = {
     headers: {
-      "x-access-token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlF1eWV0IiwiZW1haWwiOiIyMDAyMDQ2N0B2bnUuZWR1LnZuIiwiaWF0IjoxNjgwMzY0OTM5LCJleHAiOjE2ODA0NTEzMzl9.XXZJj2AKx2i1nw_T0B-j5VzspvJDlm_sCLpe9N0fuy4",
+      "x-access-token": token,
     },
   };
   const movie = props.movieInfo;
+  const [movieDetail, setMoiveDetail] = useState({});
+  const [theater, setTheater] = useState({});
+
+  console.log(movieDetail);
+  console.log(theater);
 
   const createdAtDate = new Date(movie.createdAt);
   const day = createdAtDate.getDate().toString().padStart(2, "0");
@@ -21,35 +25,53 @@ const PaymentItem = (props) => {
   const year = createdAtDate.getFullYear();
   const formattedDate = `${day}/${month}/${year}`;
 
-  // const [theater, setTheater] = useState();
+  useEffect(() => {
+    const getShowtime = async () => {
+      try {
+        const res = await axios.get(
+          `${API_HOST}/api/showtimes/${movie?.showtimeID}`,
+          axiosOptions
+        );
+        const Response = res.data;
+        const movieID = Response.movieID;
+        const theaterID = Response.theaterID;
 
-  // console.log(theater);
-  // useEffect(() => {
-  //   const getTheaterHistory = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `${API_HOST}/api/users/booking/history`,
-  //         axiosOptions
-  //       );
-  //       const Response = res.data;
-  //       setTheater(Response);
-  //     } catch (error) {
-  //       let response = error.response.data;
-  //       console.log(response);
-  //     }
-  //   };
-  //   getTheaterHistory();
-  // }, []);
+        const movieDetail = await axios.get(
+          `${API_HOST}/api/movies/details/${movieID}`,
+          axiosOptions
+        );
+        const theater = await axios.get(
+          `${API_HOST}/api/theaters/${theaterID}`,
+          axiosOptions
+        );
+        // console.log("movie detail", movieDetail.data);
+        // console.log("theater detail", theater.data);
+        setMoiveDetail(movieDetail.data);
+        setTheater(theater.data);
+      } catch (error) {
+        let response = error.response.data;
+        console.log(response);
+      }
+    };
+    getShowtime();
+  }, []);
 
   return (
     <View>
       <View style={styles.item}>
-        <Text style={styles.nameOfFilm}>name of film</Text>
+        <Text style={styles.nameOfFilm}>{movieDetail?.title}</Text>
         <View style={styles.info}>
-          <Text style={{ color: "white", fontSize: 15 }}>seat</Text>
-          <Text style={{ color: "white", fontSize: 15 }}>{formattedDate}</Text>
+          {movie.seatID.map((seat, index) => {
+            return (
+              <Text key={index} style={{ color: "white", fontSize: 15 }}>
+                {seat}{" "}
+              </Text>
+            );
+          })}
+          {/* <Text style={{ color: "white", fontSize: 15 }}></Text> */}
         </View>
-        <Text style={styles.nameOfTheater}>theater</Text>
+        <Text style={{ color: "white", fontSize: 15 }}>{formattedDate}</Text>
+        <Text style={styles.nameOfTheater}>{theater?.theater_name}</Text>
         <Text style={styles.price}>{movie.price}$</Text>
       </View>
     </View>
@@ -74,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "space-between",
     gap: 10,
-    marginTop: 25,
+    marginTop: 20,
   },
   nameOfTheater: {
     fontSize: 15,
@@ -83,7 +105,7 @@ const styles = StyleSheet.create({
   price: {
     position: "absolute",
     right: 0,
-    top: 10,
+    top: 15,
     color: "white",
     fontWeight: 300,
     fontSize: 25,

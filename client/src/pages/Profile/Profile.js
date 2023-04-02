@@ -23,7 +23,7 @@ const Profile = () => {
   // const { token } = useContext(AppContext);
   const navigation = useNavigation();
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const [username, setUsername] = useState("-1");
   const [password, setPassword] = useState(-1);
   const [phone, setphone] = useState(-1);

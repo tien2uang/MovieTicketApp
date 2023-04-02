@@ -23,7 +23,7 @@ const ProfileTab = () => {
     },
   };
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   console.log(user);
   console.log(token);
 

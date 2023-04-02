@@ -42,7 +42,9 @@ const Wishlist = () => {
           axiosOptions
         );
         const fetchedWishlist = result.data[0].wishlist;
+        console.log(fetchedWishlist);
         setWishlist(fetchedWishlist);
+
         const movieResults = await Promise.all(
           fetchedWishlist.map((id) =>
             axios.get(`${API_HOST}/api/movies/details/${id}`, axiosOptions)

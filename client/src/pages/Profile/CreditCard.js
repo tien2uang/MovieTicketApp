@@ -22,14 +22,22 @@ const CreditCard = () => {
     },
   };
 
-  const [creditCardList, setCreditCardList] = useState([1]);
+  const test = {
+    headers: {
+      "x-access-token":
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlF1eWV0IiwiZW1haWwiOiIyMDAyMDQ2N0B2bnUuZWR1LnZuIiwiaWF0IjoxNjgwNDMwNjYwLCJleHAiOjE2ODA1MTcwNjB9.c41UQ10VpiI8jABVzqNZmlWgnoGP2-CQ8RM60Ocqw9U",
+    },
+  };
+
+  const [creditCardList, setCreditCardList] = useState([]);
+  const [balance, setBalance] = useState({});
+
   const [creditCard, setCreditCard] = useState(-1);
   const [addCreditCard, setAddCreditCard] = useState(false);
   const [edit, setEdit] = useState(false);
 
-  const data = ["123", "112321", "2121"];
-  const price = ["1212", "213213", "12323"];
-  const test = [];
+  console.log(creditCardList);
+  console.log(balance);
 
   useEffect(() => {
     const getCreditCard = async () => {
@@ -40,24 +48,51 @@ const CreditCard = () => {
         );
         const Response = res.data.credit_card;
         setCreditCardList(Response);
+        console.log(Response);
+
+        // const balanceResult = await Promise.all(
+        //   Response.map((numberCard) => {
+        //     const data = {
+        //       credit_card_number: numberCard,
+        //     };
+        //     console.log(data);
+        //     const res = axios.get(
+        //       `${API_HOST}/api/users/balance/`,
+        //       data,
+        //       axiosOptions
+        //     );
+        //     console.log(res);
+        //     return res.data;
+        //   })
+        // );
       } catch (error) {
         let response = error.response.data;
         console.log(response);
       }
     };
-    getCreditCard();
+    // getCreditCard();
   }, []);
 
   useEffect(() => {
     const getBalance = async () => {
       try {
+        const data = {
+          credit_card_number: "12345",
+        };
+        console.log(data);
+        const result = await axios.get(
+          `${API_HOST}/api/users/balance`,
+          data,
+          axiosOptions
+        );
+        console.log(result);
       } catch (error) {
         let response = error.response.data;
         console.log(response);
       }
     };
-    // getBalance();
-  }, [data]);
+    getBalance();
+  }, []);
 
   const handleUpdateCreditCard = async (oldCard) => {
     if (creditCardList.includes(creditCard) || creditCard == -1) {
@@ -117,7 +152,7 @@ const CreditCard = () => {
       </View>
 
       <View style={styles.body}>
-        {data?.length == 0 ? (
+        {creditCardList?.length == 0 ? (
           <View
             style={{
               justifyContent: "center",
@@ -130,11 +165,11 @@ const CreditCard = () => {
             </Text>
           </View>
         ) : (
-          data?.map((item, index) => {
+          creditCardList?.map((item, index) => {
             return (
-              <View>
+              <View key={index}>
                 {edit ? (
-                  <View key={index} style={styles.itemEdit}>
+                  <View style={styles.itemEdit}>
                     <Text style={styles.text}>Credit card {index + 1}</Text>
                     <TextInput
                       onChangeText={(text) => setCreditCard(text)}
@@ -184,7 +219,7 @@ const CreditCard = () => {
                           fontSize: 15,
                         }}
                       >
-                        {price[index]} $
+                        {/* {price[index]} $ */} đag fix bug...
                       </Text>
                       {/* <TouchableOpacity
                         onPress={() => {
