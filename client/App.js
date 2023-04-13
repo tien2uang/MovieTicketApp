@@ -85,7 +85,7 @@ function App() {
     };
     try {
       const res = await axios.post(
-        "https://7f72-2402-800-62d2-d261-52a-e9ee-d618-bc0a.ap.ngrok.io/api/auth/signin",
+        "http://1188-183-80-75-239.ngrok.io/api/auth/signin",
         data,
         axiosOptions
       );
@@ -96,7 +96,7 @@ function App() {
   };
   return (
     <AppContextProvider>
-      <SafeAreaProvider>
+      <SafeAreaProvider style={styles.appContainer}>
         <NavigationContainer>
           <Stacks />
         </NavigationContainer>
@@ -107,6 +107,12 @@ function App() {
 
 const styles = StyleSheet.create({
   global: {},
+  appContainer: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 0,
+    // backgroundColor: "#263238",
+  },
 });
 
 export default App;

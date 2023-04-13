@@ -30,6 +30,7 @@ const Wishlist = () => {
       "x-access-token": token,
     },
   };
+  
   console.log(wishlist);
   console.log(movies);
 
