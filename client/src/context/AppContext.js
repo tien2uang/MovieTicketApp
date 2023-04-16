@@ -5,14 +5,12 @@ const INITIAL_STATE = {
   err: "",
   order: "",
   hasPay: false,
-  token: ""
-
-}
+  token: "",
+};
 export const AppContext = createContext(INITIAL_STATE);
 
 export const AppContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, INITIAL_STATE);
-
 
   return (
     <AppContext.Provider
@@ -28,4 +26,4 @@ export const AppContextProvider = ({ children }) => {
       {children}
     </AppContext.Provider>
   );
-}
+};

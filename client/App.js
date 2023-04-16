@@ -45,7 +45,7 @@ function Stacks() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="SignIn"
+      initialRouteName="MainScreen"
     >
       <Stack.Screen
         name="SignIn"
@@ -156,12 +156,8 @@ function App() {
   }
 
   return (
-
-
     <AppContextProvider>
-
-      <SafeAreaProvider>
-
+      <SafeAreaProvider style={styles.appContainer}>
         <NavigationContainer>
 
 
@@ -175,17 +171,17 @@ function App() {
         </NavigationContainer>
       </SafeAreaProvider>
     </AppContextProvider>
-
-
   );
 }
 
 const styles = StyleSheet.create({
-  global: {
-
-
-  }
-
+  global: {},
+  appContainer: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 0,
+    // backgroundColor: "#263238",
+  },
 });
 
 export default App;
