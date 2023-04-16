@@ -5,21 +5,14 @@
  * @format
  */
 
-import React, { useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useCallback } from 'react';
+import { SvgXml } from 'react-native-svg';
+import { useFonts } from 'expo-font';
+
 
 
 import {
-
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  AsyncStorage,
-  Image,
-  Button
+  StyleSheet, View,
 } from 'react-native';
 
 
@@ -42,8 +35,12 @@ import Wishlist from './src/pages/Wishlist/Wishlist';
 import Profile from './src/pages/Profile/Profile';
 import SelectCreditCard from './src/pages/SelectCreditCard/SelectCreditCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { WebView } from 'react-native-webview';
+import * as SplashScreen from 'expo-splash-screen';
+import ConfirmResetCode from './src/pages/ForgotPassword/ConfirmResetCode';
+import ResetPassword from './src/pages/ForgotPassword/ResetPassword';
 const Stack = createStackNavigator();
-
+// SplashScreen.preventAutoHideAsync();
 function Stacks() {
   return (
     <Stack.Navigator
@@ -109,6 +106,14 @@ function Stacks() {
         name='SelectCreditCard'
         component={SelectCreditCard}
       />
+      <Stack.Screen
+        name='ConfirmResetCode'
+        component={ConfirmResetCode}
+      />
+      <Stack.Screen
+        name='ResetPassword'
+        component={ResetPassword}
+      />
 
 
 
@@ -117,32 +122,39 @@ function Stacks() {
   );
 }
 
+
+
 function App() {
 
-  const axiosOptions = {
-    headers: {
-      "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlF1YW5nTlQiLCJlbWFpbCI6ImR1Y2hlMzQ1QGdtYWlsLmNvbSIsImlhdCI6MTY3OTM5MTc4NSwiZXhwIjoxNjc5NDc4MTg1fQ.lH4lf-7PUK6c0Ta0N4nw-nFWFBzQAqGoAYFueIeIPBE"
+  const [fontsLoaded] = useFonts({
+    'Poppins-Regular': require('./assets/fonts/PoppinsRegular400.ttf'),
+    'Poppins-Bold': require("./assets/fonts/PoppinsBold700.ttf"),
+    'Poppins-SemiBold': require("./assets/fonts/PoppinsSemiBold600.ttf"),
+    'Poppins-Medium': require("./assets/fonts/PoppinsMedium500.ttf"),
+    'JetBrainsMono-Regular': require("./assets/fonts/JetBrainsMono-Regular.ttf")
+  });
+
+  const [playing, setPlaying] = useState(false);
+
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+      Alert.alert("video has finished playing!");
     }
+  }, []);
+  const togglePlaying = useCallback(() => {
+    setPlaying((prev) => !prev);
+  }, []);
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
   }
 
-  const handleSubmit = async () => {
-
-    const data = {
-      username: "QuangNT",
-      email: "duche345@gmail.com",
-      password: "lolpatther",
-      isVerified: false,
-      phone: "0932134123"
-    }
-    try {
-      const res = await axios.post("https://7f72-2402-800-62d2-d261-52a-e9ee-d618-bc0a.ap.ngrok.io/api/auth/signin", data, axiosOptions);
-      console.log(res.data);
-
-
-    } catch (err) {
-      console.log(err)
-    }
-  }
   return (
 
 
@@ -153,7 +165,11 @@ function App() {
         <NavigationContainer>
 
 
+
           <Stacks />
+
+
+
 
 
         </NavigationContainer>

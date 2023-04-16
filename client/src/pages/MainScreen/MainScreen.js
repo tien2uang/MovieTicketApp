@@ -6,7 +6,7 @@ import {
     Text,
     useColorScheme,
     View,
-  } from 'react-native';
+} from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import CustomText from '../../components/CustomText';
 import IconButton from '../../components/IconButton';
@@ -21,86 +21,95 @@ import SearchTab from "./MainScreenTabs/SearchTab";
 import ProfileTab from './MainScreenTabs/ProfileTab';
 
 
-const playingNowData= [
+const playingNowData = [
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
 ]
 
-const comingSoonData= [
+const comingSoonData = [
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
 ]
-const promoData =[
+const promoData = [
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
     {
-        img:SpidermanLogo
+        img: SpidermanLogo
     },
 ]
 
 const Tab = createBottomTabNavigator();
-const MainScreen = ()=>{
+const MainScreen = () => {
     return (
-        
+
 
         <Tab.Navigator
             initialRouteName='Home'
-            screenOptions={{headerShown:false}}
+            screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                    backgroundColor: "#0F0F29",
+                    borderTopWidth: 0
+
+                }
+
+            }}
+
         >
             <Tab.Screen
                 name='Home'
                 component={HomeTab}
                 options={{
-                    title:"Home"
+                    title: "Home"
                 }}
             />
             <Tab.Screen
                 name='Search'
                 component={SearchTab}
                 options={{
-                    title:"Search"
+                    title: "Search"
                 }}
             />
             <Tab.Screen
                 name='Profile'
                 component={ProfileTab}
                 options={{
-                    title:"Profile"
+                    title: "Profile"
                 }}
             />
 
 
         </Tab.Navigator>
-        
-        
+
+
     )
 }
 const styles = StyleSheet.create({
     background: {
-        backgroundColor:"#0F0F29",
-        width:"100%",
-        height:"100%"
+        backgroundColor: "#0F0F29",
+        width: "100%",
+        height: "100%"
     },
-    
 
-    
+
+
 })
 export default MainScreen;

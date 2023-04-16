@@ -23,14 +23,40 @@ import { useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { SelectSeatSuccess } from '../../context/AppAction';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import axios from 'axios';
+import { API_HOST } from "@env";
 const SelectSeat = () => {
-    const { dispatch } = useContext(AppContext);
+    let { dispatch, token } = useContext(AppContext);
     const navigation = useNavigation();
     const route = useRoute();
-    const item = route.params.item;
-    const handleSubmit = () => {
-        // dispatch(SelectSeatSuccess());
-        navigation.navigate("BookingDetail", { item: item });
+    const movieInfo = route.params.movieInfo;
+
+    const axiosOptions = {
+        headers: {
+            "x-access-token": token
+        }
+    }
+    const data = {
+
+        showtimeID: "ST0017",
+        seatID: ["S0010", "S0011", "S0012", "S0013"],
+        discountID: "D002"
+    }
+    const booking = async () => {
+        // navigation.navigate("SelectCreditCard", { movieInfo: movieInfo, bookingInfo: {} });
+        try {
+
+            const res = await axios.post(`${API_HOST}/api/booking/create`, data, axiosOptions);
+            console.log(res.data);
+            dispatch(SelectSeatSuccess());
+            navigation.navigate("SelectCreditCard", { movieInfo: movieInfo, bookingInfo: res.data });
+
+        }
+        catch (err) {
+            console.log(err.response.data);
+        }
+
+
     }
     return (
         <SafeAreaView>
@@ -45,18 +71,12 @@ const SelectSeat = () => {
                             navigation.goBack();
                         }}
                     />
-                    <Button
-                        title="Select Credit Card"
-                        onPress={() => {
-                            console.log('click')
-                            navigation.navigate("SelectCreditCard", { item: item })
-                        }}
-                    />
+
 
                     <Button
-                        title="Order"
+                        title="Next"
                         onPress={() => {
-                            handleSubmit();
+                            booking();
                         }}
                     />
                     <CustomText textValue={"Cancel order"} />

@@ -76,17 +76,11 @@ export const AppReducer = (state, action) => {
 
         case "BOOKING_START":
             return {
-                user: "",
-                error: false,
-                order: "",
-                hasPay: false
+                ...state
             }
         case "SELECT_SEAT_SUCCESS":
             return {
-                user: action.payload.user,
-                error: false,
-                order: action.payload.order,
-                hasPay: false
+                ...state
 
             }
         case "PAY_SUCCESS":

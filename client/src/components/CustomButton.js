@@ -1,26 +1,37 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TextInput, Button, Pressable } from 'react-native';
 
-const CustomButton = ({ onPress, text, bgColor, fgColor, w, h, pad, bColor, bWidth, align, marginL }) => {
+const CustomButton = ({ onPress, text, justifyContent, bgColor, color, secondColor, w, h, pad, borderColor, borderWidth, alignItems, fontSize, marginBottom, fontFamily, secondText, secondFontFamily }) => {
     return (
         <Pressable
             style={[
                 styles.container,
                 bgColor ? { backgroundColor: bgColor } : {},
-                w ? {width: w} : {},
-                h ? {height: h} : {},
-                pad ? {padding: pad} : {},
-                bColor ? {borderColor: bColor} : {},
-                bWidth ? {borderWidth: bWidth} : {},
-                align ? {alignSelf: align} : {},
+                w ? { width: w } : {},
+                h ? { height: h } : {},
+                pad ? { padding: pad } : {},
+                borderColor ? { borderColor: borderColor } : {},
+                borderWidth ? { borderWidth: borderWidth } : {},
+                alignItems ? { alignItems: alignItems } : { alignItems: 'center' },
+                justifyContent ? { justifyContent: justifyContent } : { justifyContent: 'center', },
+                marginBottom ? { marginBottom: marginBottom } : {}
+
+
             ]}
             onPress={onPress}
         >
             <Text style={[
-                styles.text,
-                fgColor ? {color: fgColor} : {},
+                fontFamily ? { fontFamily: fontFamily } : { fontFamily: 'Poppins-Regular' },
+                { color: color },
+                { fontSize: fontSize },
+
             ]}>
                 {text}
+                <Text style={[
+                    { color: secondColor, fontFamily: secondFontFamily }
+                ]}>
+                    {secondText}
+                </Text>
             </Text>
         </Pressable>
     )
@@ -28,15 +39,12 @@ const CustomButton = ({ onPress, text, bgColor, fgColor, w, h, pad, bColor, bWid
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 5,
+
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5,
     },
-    text: {
-        fontStyle: 'normal',
-        color: 'white',
-    }
+
 })
 
 export default CustomButton;
