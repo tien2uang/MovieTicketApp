@@ -136,13 +136,6 @@ const CreditCard = () => {
                     >
                       <Text style={styles.update}>update</Text>
                     </TouchableOpacity>
-                    {/* <TouchableOpacity
-                      onPress={() => {
-                        setEdit(false);
-                      }}
-                    >
-                      <Text style={styles.cancel}>cancel</Text>
-                    </TouchableOpacity> */}
                   </View>
                 ) : (
                   <View style={{ marginBottom: 10 }}>
@@ -171,7 +164,7 @@ const CreditCard = () => {
                           fontSize: 15,
                         }}
                       >
-                        {item.balance}
+                        {item.balance}$
                       </Text>
                       {/* <TouchableOpacity
                         onPress={() => {
@@ -211,13 +204,13 @@ const CreditCard = () => {
               <Text style={styles.update}>add</Text>
             </TouchableOpacity>
 
-            {/* <TouchableOpacity
+            <TouchableOpacity
               onPress={() => {
                 setAddCreditCard(false);
               }}
             >
               <Text style={styles.cancel}>cancel</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         )}
       </View>

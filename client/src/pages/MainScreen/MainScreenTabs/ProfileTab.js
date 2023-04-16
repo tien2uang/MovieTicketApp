@@ -24,8 +24,9 @@ const ProfileTab = () => {
   };
 
   const [user, setUser] = useState({});
-  console.log(token);
+  // console.log(token);
   console.log(user);
+  // edit/phone
 
   useEffect(() => {
     const getInfoUser = async () => {

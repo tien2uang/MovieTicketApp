@@ -31,7 +31,7 @@ const Wishlist = () => {
     },
   };
   console.log(wishlist);
-  console.log(movies);
+  // console.log(movies);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,26 +79,6 @@ const Wishlist = () => {
               {movies?.map((item, index) => {
                 // return <View key={index}></View>;
                 return <WishlistItem key={index} movies={item} />;
-                // return (
-                //   <Pressable
-                //     key={index}
-                //     style={styles.item}
-                //     onPress={() => {
-                //       console.log("click");
-                //       navigation.navigate("MovieDetail", { item: item });
-                //     }}
-                //   >
-                //     <Text style={styles.nameOfFilm}>{item}</Text>
-
-                //     <Text style={styles.director}>
-                //       Director: {item.director}
-                //     </Text>
-                //     <Text style={styles.info}>Category: {item.category}</Text>
-
-                //     <Text style={styles.price}>{item.ticketCount}$</Text>
-                //     <Text style={styles.icon}>star</Text>
-                //   </Pressable>
-                // );
               })}
             </View>
           )}

@@ -17,7 +17,7 @@ const PaymentItem = (props) => {
   const [theater, setTheater] = useState();
 
   console.log(movieDetail);
-  console.log(theater);
+  // console.log(theater);
 
   const createdAtDate = new Date(movie.createdAt);
   const day = createdAtDate.getDate().toString().padStart(2, "0");

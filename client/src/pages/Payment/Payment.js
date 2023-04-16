@@ -26,7 +26,7 @@ const Payment = () => {
   };
 
   const [payment, setPayment] = useState([]);
-  console.log(payment);
+  // console.log(payment);
 
   useEffect(() => {
     const getPaymentHistory = async () => {
