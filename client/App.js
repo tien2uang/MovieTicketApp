@@ -39,13 +39,14 @@ import { WebView } from 'react-native-webview';
 import * as SplashScreen from 'expo-splash-screen';
 import ConfirmResetCode from './src/pages/ForgotPassword/ConfirmResetCode';
 import ResetPassword from './src/pages/ForgotPassword/ResetPassword';
+import CreditCard from './src/pages/Profile/CreditCard';
 const Stack = createStackNavigator();
 // SplashScreen.preventAutoHideAsync();
 function Stacks() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="MainScreen"
+      initialRouteName="SignIn"
     >
       <Stack.Screen
         name="SignIn"
@@ -99,7 +100,7 @@ function Stacks() {
         component={Wishlist}
       />
       <Stack.Screen
-        name='Profile'
+        name='ProfileScreen'
         component={Profile}
       />
       <Stack.Screen
@@ -114,6 +115,7 @@ function Stacks() {
         name='ResetPassword'
         component={ResetPassword}
       />
+      <Stack.Screen name="CreditCardDetail" component={CreditCard} />
 
 
 
@@ -178,7 +180,7 @@ const styles = StyleSheet.create({
   global: {},
   appContainer: {
     flex: 1,
-    paddingTop: 50,
+
     paddingHorizontal: 0,
     // backgroundColor: "#263238",
   },

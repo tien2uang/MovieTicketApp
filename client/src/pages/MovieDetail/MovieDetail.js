@@ -164,16 +164,16 @@ const MovieDetail = () => {
                         </View>
                         <View style={[styles.container, styles.synosis]}>
                             <CustomText textValue={"TRAILER"} fontSize={16} color={"white"} fontFamily={"Poppins-SemiBold"} marginBottom={8} />
-                            {/* <View>
+                            <View>
                                 <YoutubePlayer
 
-                                    height={"100%"}
+                                    height={240}
                                     play={playing}
-                                    videoId={"SNES5Y-tYxM"}
+                                    videoId={extractVideoIDFromURL(item.trailerURL)}
                                     onChangeState={onStateChange}
                                 />
 
-                            </View> */}
+                            </View>
 
                         </View>
                         <View style={[styles.act, styles.container]}>
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
     synosis: {
-        flex: 0.3,
+
     },
     content: {
 

@@ -26,10 +26,13 @@ import axios from "axios";
 import MovieButton from "../../../components/SearchScreenComponents/MovieButton";
 import { useState, useEffect } from "react";
 import SpidermanLogo from "../../../../assets/img/spider.png";
+import { AppContext } from "../../../context/AppContext";
+import { useContext } from "react";
 
 const numListMovies = 2;
 
 const SearchTab = () => {
+  const { dispatch, token } = useContext(AppContext);
   const navigation = useNavigation();
   const route = useRoute();
   const [movies, setMovies] = useState();
@@ -52,12 +55,12 @@ const SearchTab = () => {
   console.log(movies);
 
   const renderMovies = ({ item }) => (
-      <MovieButton
-        onPress={() => navigation.navigate("MovieDetail", { item: item })}
-        imgSrc={{ uri: item.avt }}
-        title={item.title}
-        duration={item.duration}
-      ></MovieButton>
+    <MovieButton
+      onPress={() => navigation.navigate("MovieDetail", { item: item })}
+      imgSrc={{ uri: item.avt }}
+      title={item.title}
+      duration={item.duration}
+    ></MovieButton>
   );
   return (
     <SafeAreaView>

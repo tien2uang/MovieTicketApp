@@ -63,60 +63,87 @@ const SignIn = () => {
   };
   return (
     <SafeAreaView>
-      <View style={styles.background}>
-        <Image source={Logo} />
-        <Text>Login to Your Account</Text>
-        <CustomInput
-          placeholder={"Email"}
-          value={email}
-          onChangeText={(val) => setEmail(val)}
-          onFocus={() => {
-            setWarning("");
-          }}
-        />
-        <CustomInput
-          placeholder={"Password"}
-          value={password}
-          onChangeText={(val) => setPassword(val)}
-          onFocus={() => {
-            setWarning("");
-          }}
-        />
-        <CustomText textValue={warning} />
-        <CustomButton
-          onPress={() => {
-            signIn();
-          }}
-          text="Login"
-          bgColor="#4838D1"
-          w={295}
-          h={56}
-          pad={15}
-        />
-        <CustomButton
-          onPress={() => navigation.navigate("ForgotPassword")}
-          text="Forgot Password ?"
-          bgColor="#FFFFFF"
-          fgColor="#F77A55"
-          w={295}
-          h={29}
-          align="flex-end"
-        />
-        <CustomText textValue="Or login with" />
-        <View style={styles.row}>
-          <IconButton onPress={""} bgColor="#FFFFFF" imgSrc={GoogleLogo} />
-        </View>
-        <View style={styles.row}>
-          <CustomText textValue="Bạn chưa có tài khoản ? " />
-          <CustomButton
-            onPress={() => navigation.navigate("SignUp")}
-            text="Đăng ký tại đây"
-            bgColor="#FFFFFF"
-            fgColor="#F77A55"
-            w={100}
-            h={21}
-          />
-        </View>
+      <View style={styles.background} >
+        <ScrollView>
+
+
+          <View style={styles.header}>
+
+            <Image
+              source={Logo}
+              style={{ width: 120, height: 120 }}
+
+            />
+          </View>
+
+          <View style={styles.content}>
+
+            <CustomText textValue={"Login to Your Account"} fontSize={16} color={"#F5F5FA"}
+              fontFamily={"Poppins-SemiBold"} marginBottom={16} marginLeft={8}
+            />
+            <CustomInput placeholder={"Email"} value={email} onChangeText={(val) => setEmail(val)} onFocus={() => { setWarning("") }} />
+            <CustomInput placeholder={"Password"} value={password} security={true} onChangeText={(val) => setPassword(val)} onFocus={() => { setWarning("") }} />
+            <CustomText textValue={warning}
+              fontSize={14} color={"#D77260"}
+              fontFamily={"Poppins-Medium"} />
+            <CustomButton
+              onPress={() => {
+                signIn()
+              }}
+              text='Login'
+              bgColor='#4838D1'
+              w={295}
+              color={"#EBEBF5"}
+              fontSize={16}
+              fontFamily={"Poppins-Medium"}
+              h={56}
+              pad={15}
+              marginBottom={16}
+            />
+            <CustomButton
+              onPress={() => navigation.navigate("ForgotPassword")}
+              text='Forgot Password ?'
+
+              color={"#7885FF"}
+              fontSize={14}
+              fontFamily={"Poppins-Medium"}
+              w={295}
+              h={29}
+              alignItems={"flex-end"}
+            />
+            <View style={styles.signInOption}>
+              <CustomText
+                textValue='Or login with'
+                fontSize={14} color={"#F5F5FA"}
+                fontFamily={"Poppins-Regular"}
+              />
+              <IconButton
+                onPress={() => { signInWithGG() }}
+                bgColor='#FFFFFF'
+                imgSrc={GoogleLogo}
+              />
+
+            </View>
+            <View style={styles.signUp}>
+
+              <CustomButton
+                onPress={() => navigation.navigate("SignUp")}
+                secondText={"Register"}
+                color={"#F5F5FA"}
+                text="Don't have an account? "
+                secondColor={"#7885FF"}
+                fontSize={14}
+                secondFontFamily={"Poppins-Medium"}
+                w={295}
+                h={29}
+              />
+            </View>
+          </View>
+        </ScrollView>
+
+
+
+
       </View>
     </SafeAreaView>
   );

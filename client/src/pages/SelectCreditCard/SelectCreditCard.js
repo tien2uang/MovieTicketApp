@@ -146,7 +146,7 @@ const SelectCreditCard = () => {
                         <View style={styles.totalAmount}>
                             <View>
 
-                                <CustomText textValue={"Spiderman"} fontSize={14} color={"#F5F5FA"}
+                                <CustomText textValue={movieInfo.title} fontSize={14} color={"#F5F5FA"}
                                     fontFamily={"Poppins-Regular"} marginBottom={14}
                                 />
                                 <CustomText textValue={bookingInfo.seats.toString()} fontSize={14} color={"#F5F5FA"}

@@ -1,78 +1,18 @@
-// import CustomButton from "../../components/CustomButton";
-// import CustomText from "../../components/CustomText";
-// import IconButton from "../../components/IconButton";
-// import NavigationBar from "../../components/NavigationBar";
-// import UserLogo from "../../../assets/img/UserLogo.png";
-// import FilmButton from "../../components/MainScreenComponents/FilmButton";
-// import SpidermanLogo from "../../../assets/img/spider.png";
-// import { useNavigation } from "@react-navigation/native";
-// import { useRoute } from "@react-navigation/native";
-// import { useContext } from "react";
-// import { AppContext } from "../../context/AppContext";
-// import { SelectSeatSuccess } from "../../context/AppAction";
-// import {
-//   View,
-//   Text,
-//   StyleSheet,
-//   TouchableOpacity,
-//   SafeAreaView,
-//   FlatList,
-//   ScrollView,
-//   Button
-// } from "react-native";
-// import { vw, vh } from "react-native-css-vh-vw";
 
-// const SelectSeat = () => {
-//   const { dispatch } = useContext(AppContext);
-//   const navigation = useNavigation();
-//   const route = useRoute();
-//   const item = route.params.item;
-//   const handleSubmit = () => {
-//     // dispatch(SelectSeatSuccess());
-//     navigation.navigate("BookingDetail", { item: item });
-//   };
-//   return (
-//     <SafeAreaView>
-//       <View style={styles.background}>
-//         <ScrollView>
-//           <CustomText textValue={"Select Seat"} />
-//           <Button
-//             title="Back"
-//             onPress={() => {
-//               console.log("click");
-//               navigation.goBack();
-//             }}
-//           />
-
-//           <Button
-//             title="Order"
-//             onPress={() => {
-//               handleSubmit();
-//             }}
-//           />
-//           <CustomText textValue={"Cancel order"} />
-//           <Button
-//             title="Cancel"
-//             onPress={() => {
-//               navigation.goBack();
-//             }}
-//           />
-//         </ScrollView>
-//       </View>
-//     </SafeAreaView>
-//   );
-// };
 
 import {
+
+
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
+
   FlatList,
   ScrollView,
   Button,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { vw, vh } from "react-native-css-vh-vw";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
@@ -87,10 +27,10 @@ const numStatusColumns = 3;
 const numListSeats = 10;
 
 const SelectSeat = () => {
-  const { dispatch } = useContext(AppContext);
+  const { dispatch, token } = useContext(AppContext);
   const navigation = useNavigation();
   const route = useRoute();
-  const itemRoute = route.params.item;
+  const itemRoute = route.params.movieInfo;
 
   const [numOfSeats, setNumOfSeats] = useState([]);
   const [seats, setSeats] = useState([]);
@@ -135,6 +75,7 @@ const SelectSeat = () => {
     </View>
   );
   useEffect(() => {
+    console.log(itemRoute)
     const getSeats = async () => {
       try {
         const result = await axios.get(
@@ -150,11 +91,15 @@ const SelectSeat = () => {
     };
     const getInfoTimeMovie = async () => {
       try {
+        console.log(API_HOST)
+        console.log("fetch" + itemRoute.movieID)
         const result = await axios.get(
           `${API_HOST}/api/movies/showtime/${itemRoute.movieID ? itemRoute.movieID : "M0001"
           }`,
           axiosOptions
         );
+        console.log("fetch done")
+
         if (result.data) {
           result.data.showtimes.map(async (showtime) => {
             const myDate = { myDate: showtime.date };
@@ -177,12 +122,13 @@ const SelectSeat = () => {
               },
               ...prev,
             ]);
+
           });
+
         }
-      } catch {
-        (error) => {
-          // console.log(error);
-        };
+
+      } catch (err) {
+        console.log(err.message);
       }
     };
     getInfoTimeMovie();
@@ -200,7 +146,7 @@ const SelectSeat = () => {
       setNumOfSeats(array);
     }
   };
-  const renderSeets = ({ item, index }) => {
+  const renderSeats = ({ item, index }) => {
     return (
       <View>
         {numOfSeats?.includes(item) ? (
@@ -291,7 +237,7 @@ const SelectSeat = () => {
         axiosOptions
       );
       if (result.data.message === "Success!") {
-        navigation.navigate("BookingDetail", { item: itemRoute });
+        navigation.navigate("SelectCreditCard", { movieInfo: itemRoute, bookingInfo: result.data });
         setNumOfSeats([]);
       } else {
         console.log("failed1");
@@ -354,23 +300,23 @@ const SelectSeat = () => {
                 navigation.goBack();
               }}
             ></AntDesign>
-            <Text style={styles.headerText}>SELECT SEETS</Text>
+            <Text style={styles.headerText}>SELECT SEATS</Text>
           </View>
 
           <View styles={styles.selectSeets}>
             <View style={styles.divider}></View>
             <View>
-              <SafeAreaView>
-                <FlatList
-                  style={styles.seatsList}
-                  renderItem={renderSeets}
-                  data={seats}
-                  key={"**"}
-                  showsHorizontalScrollIndicator={false}
-                  scrollEnabled={false}
-                  numColumns={numListSeats}
-                ></FlatList>
-              </SafeAreaView>
+
+              <FlatList
+                style={styles.seatsList}
+                renderItem={renderSeats}
+                data={seats}
+                key={"**"}
+                showsHorizontalScrollIndicator={false}
+                scrollEnabled={false}
+                numColumns={numListSeats}
+              ></FlatList>
+
             </View>
 
             <FlatList
@@ -412,17 +358,17 @@ const SelectSeat = () => {
             showsHorizontalScrollIndicator={false}
           ></FlatList>
 
-          <SafeAreaView>
-            <FlatList
-              style={styles.cinemaList}
-              data={showtime}
-              renderItem={renderCinemaList}
-              key="+"
-              keyExtractor={(item) => item.name}
-              showsVerticalScrollIndicator={false}
-              ListFooterComponent={renderFooterFlatList}
-            ></FlatList>
-          </SafeAreaView>
+
+          <FlatList
+            style={styles.cinemaList}
+            data={showtime}
+            renderItem={renderCinemaList}
+            key="+"
+            keyExtractor={(item) => item.name}
+            showsVerticalScrollIndicator={false}
+            ListFooterComponent={renderFooterFlatList}
+          ></FlatList>
+
 
           <View style={styles.orderTicket}>
             <TouchableOpacity>

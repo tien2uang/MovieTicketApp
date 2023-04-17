@@ -93,7 +93,7 @@ const BookingDetail = () => {
                         </View>
                         <CustomText marginBottom={24} textAlign={"center"} width={278} textValue={movieInfo.title.toUpperCase()} fontSize={17} fontFamily={"Poppins-Medium"} color={"white"} />
                         <CustomText textAlign={"center"} width={133} textValue={"22:00 | 18/2/2023"} fontSize={14} fontFamily={"Poppins-Regular"} color={"white"} />
-                        <CustomText textAlign={"center"} width={180} textValue={"Transmart MX Mall XXI"} fontSize={14} fontFamily={"Poppins-Regular"} color={"white"} />
+                        <CustomText textAlign={"center"} width={180} textValue={"Cineplex 1"} fontSize={14} fontFamily={"Poppins-Regular"} color={"white"} />
                         <CustomText marginBottom={24} textAlign={"center"} width={180} textValue={bookingInfo.seats.toString()} fontSize={14} fontFamily={"Poppins-Regular"} color={"white"} />
 
                         <View style={styles.qrCode}>
