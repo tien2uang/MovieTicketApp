@@ -29,6 +29,7 @@ const Payment = () => {
   // console.log(payment);
 
   useEffect(() => {
+    console.log("fetch");
     const getPaymentHistory = async () => {
       try {
         const res = await axios.get(
@@ -49,25 +50,28 @@ const Payment = () => {
     <SafeAreaView>
       <View style={styles.background}>
         <ScrollView>
-          {/* <CustomText textValue={"Payment"} /> */}
           <View style={styles.header}>
-            <Text style={styles.payment}>Payment</Text>
+            <CustomText textValue={"Payment"} color={"white"} fontSize={24} />
           </View>
 
           <View style={styles.body}>
             {payment?.map((item, index) => {
               return <PaymentItem key={index} movieInfo={item} />;
-              // return <View key={index}></View>;
             })}
           </View>
 
-          <Button
-            title="Back"
-            onPress={() => {
-              console.log("click");
-              navigation.goBack();
-            }}
-          />
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <CustomButton
+              onPress={() => {
+                navigation.goBack();
+              }}
+              text="Back"
+              bgColor="#4838D1"
+              w={295}
+              h={56}
+              pad={15}
+            />
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>

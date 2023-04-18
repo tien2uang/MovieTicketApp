@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import CustomButton from "../../components/CustomButton";
 import CustomText from "../../components/CustomText";
+import CustomInput from "../../components/CustomInput";
 import UserLogo from "../../../assets/img/UserLogo.png";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
@@ -24,9 +25,14 @@ const Profile = () => {
   const navigation = useNavigation();
 
   const [user, setUser] = useState({});
-  const [username, setUsername] = useState("-1");
-  const [password, setPassword] = useState(-1);
-  const [phone, setphone] = useState(-1);
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [phone, setphone] = useState();
+  const [warning, setWarning] = useState({
+    username: "",
+    phone: "",
+    password: "",
+  });
 
   // #CDCDCD
   const axiosOptions = {
@@ -34,9 +40,9 @@ const Profile = () => {
       "x-access-token": token,
     },
   };
-  console.log(user);
 
   useEffect(() => {
+    console.log("fetch");
     const getInfoUser = async () => {
       try {
         const res = await axios.get(
@@ -54,81 +60,107 @@ const Profile = () => {
     getInfoUser();
   }, []);
 
-  const handleUpdateUsername = async () => {
-    if (username !== user.username && username != "-1") {
-      console.log(username);
-      const data = {
-        username: username,
-      };
-      console.log(data);
-      try {
-        console.log("fetch");
-        const res = await axios.put(
-          `${API_HOST}/api/users/edit/username`,
-          data,
-          axiosOptions
-        );
-        const Response = res.data;
-        console.log(Response);
-        alert("Thay đổi username thành công");
-      } catch (error) {
-        let response = error.response.data;
-        console.log(response);
-      }
+  const handelUpdate = async () => {
+    if (username == undefined && password == undefined && phone == undefined) {
+      alert("Thông tin chưa thay đổi");
     } else {
-      alert("username chưa thay đổi");
+      if (username == "" || password == "" || phone == "") {
+        if (username == "") {
+          setWarning((prevState) => ({
+            ...prevState,
+            username: "Username không được trống",
+          }));
+        }
+
+        if (password == "") {
+          setWarning((prevState) => ({
+            ...prevState,
+            password: "Password không được trống",
+          }));
+        }
+
+        if (phone == "") {
+          setWarning((prevState) => ({
+            ...prevState,
+            phone: "Phone không được trống",
+          }));
+        }
+        return;
+      }
+
+      if (
+        username !== user.username ||
+        password !== user.password ||
+        phone !== user.phone
+      ) {
+        if (username !== user.username) {
+          handleUpdateUsername();
+        }
+
+        if (password !== user.password) {
+          handleUpdatePassword();
+        }
+
+        if (phone !== user.phone) {
+          handleUpdatePhone();
+        }
+        alert("Thay đổi thông tin thành công");
+      }
+    }
+  };
+
+  const handleUpdateUsername = async () => {
+    const dataUsername = {
+      username: username,
+    };
+    try {
+      const res = await axios.put(
+        `${API_HOST}/api/users/edit/username`,
+        dataUsername,
+        axiosOptions
+      );
+      const Response = res.data;
+      console.log(Response);
+    } catch (error) {
+      let response = error.response.data;
+      console.log(response);
     }
   };
 
   const handleUpdatePassword = async () => {
-    if (password !== user.password && password != -1) {
-      console.log(password);
-      const data = {
-        password: password,
-      };
-      console.log(data);
-      try {
-        console.log("fetch");
-        const res = await axios.post(
-          `${API_HOST}/api/users/changepassword`,
-          data,
-          axiosOptions
-        );
-        const Response = res.data;
-        console.log(Response);
-        alert("Thay đổi password thành công");
-      } catch (error) {
-        let response = error.response.data;
-        console.log(response);
-      }
-    } else {
-      alert("Password not change");
+    const dataPassword = {
+      password: password,
+    };
+    try {
+      console.log("fetch");
+      const res = await axios.post(
+        `${API_HOST}/api/users/changepassword`,
+        dataPassword,
+        axiosOptions
+      );
+      const Response = res.data;
+      console.log(Response);
+    } catch (error) {
+      let response = error.response.data;
+      console.log(response);
     }
   };
 
   const handleUpdatePhone = async () => {
-    if (phone !== user.phone && phone != -1) {
-      console.log(phone);
-      const data = {
-        phone: phone,
-      };
-      console.log(data);
-      try {
-        console.log("fetch");
-        const res = await axios.put(
-          `${API_HOST}/api/users/edit/phone`,
-          data,
-          axiosOptions
-        );
-        const Response = res.data;
-        console.log(Response);
-        alert("Thay đổi số điện thoại thành công");
-      } catch (error) {
-        let response = error.response.data;
-        console.log(response);
-      }
-    } else {
-      alert("phone not change");
+    const dataPhone = {
+      phone: phone,
+    };
+    try {
+      const res = await axios.put(
+        `${API_HOST}/api/users/edit/phone`,
+        dataPhone,
+        axiosOptions
+      );
+      const Response = res.data;
+      console.log(Response);
+    } catch (error) {
+      let response = error.response.data;
+      console.log(response);
     }
   };
 
@@ -139,66 +171,69 @@ const Profile = () => {
         <ScrollView>
           <View style={styles.header}>
             <Image style={styles.img} source={UserLogo}></Image>
-            <TouchableOpacity>
-              <Text style={{ color: "#0C8CE9", marginTop: 10 }}>
-                Change profile photo
-              </Text>
-            </TouchableOpacity>
           </View>
 
           <View style={styles.body}>
             <View style={styles.item}>
               <Text style={styles.text}>Username</Text>
-              <TextInput
-                onChangeText={(text) => setUsername(text)}
-                placeholder="Username"
+              <CustomInput
+                placeholder={"Username"}
                 defaultValue={user?.username}
-                style={styles.inputText}
+                onFocus={() =>
+                  setWarning((prevState) => ({
+                    ...prevState,
+                    username: "",
+                  }))
+                }
+                onChangeText={(text) => setUsername(text)}
               />
-              <TouchableOpacity onPress={handleUpdateUsername}>
-                <Text style={styles.update}>Update</Text>
-              </TouchableOpacity>
+
+              <Text style={styles.warning}>{warning.username}</Text>
             </View>
 
             <View style={styles.item}>
               <Text style={styles.text}>Email</Text>
-              <TextInput
-                onChangeText={(text) => setEmail(text)}
+              <CustomInput
+                placeholder={"Email"}
                 editable={false}
-                placeholder="Email"
-                defaultValue={user?.email}
-                style={styles.inputText}
+                value={user?.email}
                 keyboardType="email-address"
               />
             </View>
 
             <View style={styles.item}>
               <Text style={styles.text}>Password</Text>
-              <TextInput
+              <CustomInput
+                placeholder={"Password"}
+                defaultValue={"123456"}
+                security={true}
+                onFocus={() =>
+                  setWarning((prevState) => ({
+                    ...prevState,
+                    password: "",
+                  }))
+                }
                 onChangeText={(text) => setPassword(text)}
-                placeholder="Password"
-                // defaultValue={user?.password}
-                defaultValue="123456"
-                style={styles.inputText}
-                secureTextEntry={true}
               />
-              <TouchableOpacity onPress={handleUpdatePassword}>
-                <Text style={styles.update}>Update</Text>
-              </TouchableOpacity>
+              <Text style={styles.warning}>{warning.password}</Text>
             </View>
 
             <View style={styles.item}>
               <Text style={styles.text}>Phone</Text>
-              <TextInput
-                onChangeText={(text) => setphone(text)}
-                placeholder="Phone"
+
+              <CustomInput
+                placeholder={"Phone"}
                 defaultValue={user?.phone}
-                style={styles.inputText}
-                keyboardType="number-pad"
+                keyboardType={"number-pad"}
+                onFocus={() =>
+                  setWarning((prevState) => ({
+                    ...prevState,
+                    phone: "",
+                  }))
+                }
+                onChangeText={(text) => setphone(text)}
               />
-              <TouchableOpacity onPress={handleUpdatePhone}>
-                <Text style={styles.update}>Update</Text>
-              </TouchableOpacity>
+              <Text style={styles.warning}>{warning.phone}</Text>
             </View>
 
             <TouchableOpacity
@@ -206,7 +241,6 @@ const Profile = () => {
               onPress={() => navigation.navigate("CreditCardDetail")}
             >
               <Text style={styles.creditCardText}>Credit card</Text>
-              <Text style={styles.icon}>icon</Text>
             </TouchableOpacity>
           </View>
 
@@ -225,9 +259,28 @@ const Profile = () => {
             <Text
               style={{
                 color: "white",
+                fontFamily: "Poppins-Regular",
               }}
             >
               Back
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handelUpdate}
+            style={{
+              position: "absolute",
+              color: "white",
+              top: 40,
+              right: 20,
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontFamily: "Poppins-Regular",
+              }}
+            >
+              Update
             </Text>
           </TouchableOpacity>
         </ScrollView>
@@ -249,13 +302,14 @@ const styles = StyleSheet.create({
   body: {
     marginBottom: 40,
     padding: 15,
+    marginLeft: 30,
   },
   img: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
   },
   item: {
-    marginVertical: 10,
+    marginVertical: 5,
   },
   text: {
     opacity: 0.5,
@@ -268,27 +322,29 @@ const styles = StyleSheet.create({
     borderColor: "#607D8B",
     color: "white",
     marginBottom: 10,
+    fontFamily: "Poppins-Regular",
   },
-  update: {
-    color: "white",
+  warning: {
+    color: "red",
+    fontFamily: "Poppins-Regular",
     position: "absolute",
-    right: 0,
-    top: -50,
-    opacity: 0.5,
+    bottom: -7,
   },
   creditCard: {
-    backgroundColor: "#37474F",
-    borderRadius: 20,
+    display: "flex",
+    backgroundColor: "#4838D1",
+    borderRadius: 15,
     height: 50,
     marginTop: 20,
+    marginRight: 40,
+    justifyContent: "center",
+    alignItems: "center",
   },
   creditCardText: {
     fontSize: 20,
     fontWeight: 400,
     color: "white",
-    position: "absolute",
-    top: 10,
-    left: 10,
+    fontFamily: "Poppins-Regular",
   },
   icon: {
     color: "white",

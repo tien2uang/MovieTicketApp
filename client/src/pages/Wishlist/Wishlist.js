@@ -31,7 +31,7 @@ const Wishlist = () => {
     },
   };
   console.log(wishlist);
-  // console.log(movies);
+  console.log(movies);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +52,7 @@ const Wishlist = () => {
         const fetchedMovies = movieResults.map((result) => result.data);
         setMovies(fetchedMovies);
       } catch (error) {
-        console.error(error);
+        console.error(error, "ko fetch dc");
       }
     };
     fetchData();
@@ -62,17 +62,20 @@ const Wishlist = () => {
     <SafeAreaView>
       <View style={styles.background}>
         <ScrollView>
-          {/* <CustomText textValue={"Wishlist"} /> */}
           <View style={styles.header}>
-            <Text style={styles.wishlist}>Wishlist</Text>
+            <CustomText textValue={"Wishlist"} color={"white"} fontSize={24} />
           </View>
 
-          {/* <View style={styles.body}> */}
           {movies?.length == 0 ? (
             <View style={styles.noWishlist}>
               <Text style={{ color: "white", fontSize: 20 }}>
                 Bạn chưa có phim yêu thích nào
               </Text>
+              <CustomText
+                textValue={"Bạn chưa có phim yêu thích nào"}
+                color={"white"}
+                fontSize={20}
+              />
             </View>
           ) : (
             <View style={styles.body}>
@@ -84,12 +87,18 @@ const Wishlist = () => {
           )}
           {/* </View> */}
 
-          <Button
-            title="Back"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <CustomButton
+              onPress={() => {
+                navigation.goBack();
+              }}
+              text="Back"
+              bgColor="#4838D1"
+              w={295}
+              h={56}
+              pad={15}
+            />
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>

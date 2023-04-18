@@ -4,7 +4,6 @@
     "slug": "client",
     "version": "1.0.0",
     "orientation": "portrait",
-  
     "userInterfaceStyle": "light",
     "splash": {
       "resizeMode": "contain",
@@ -24,6 +23,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "41286a0f-2480-45b1-a919-898ac7ebc9fe"
+      }
     }
   }
 }
