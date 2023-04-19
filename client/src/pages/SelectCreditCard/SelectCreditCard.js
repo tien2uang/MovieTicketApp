@@ -5,6 +5,7 @@ import {
     StatusBar,
     StyleSheet,
     Text,
+    TextInput,
     useColorScheme,
     Pressable,
     Button,
@@ -28,6 +29,7 @@ import { API_HOST } from "@env";
 import axios from 'axios';
 import CreditCard from '../../components/CreditCard';
 import ArrowLeft from "../../../assets/img/arrow-left.png";
+import CustomInput from '../../components/CustomInput';
 
 const creditCardInfo = [
     {
@@ -50,7 +52,7 @@ const SelectCreditCard = () => {
     }
 
     const calculatePrice = (seatCount) => {
-        return seatCount * 25 + " USD"
+        return seatCount * 25
     }
     const displaySeat = (seats) => {
         let seatString = "";
@@ -69,7 +71,9 @@ const SelectCreditCard = () => {
     console.log(bookingInfo);
 
     const [creditCards, setCreditCards] = useState(["35000321", "3213424"]);
-    const [chosenCreditCard, setChosenCreditCard] = useState("");
+    const [chosenCreditCard, setChosenCreditCard] = useState("None");
+    const [discount, setDiscount] = useState("");
+    const [price, setPrice] = useState(calculatePrice(bookingInfo.seatCount));
 
 
     // useEffect(() => {
@@ -140,6 +144,38 @@ const SelectCreditCard = () => {
                                 fontFamily={"Poppins-Regular"} marginBottom={14} marginTop={2}
                             />
                         </View>
+                        <View style={styles.applyDiscount}>
+                            <View style={styles.discountInput}>
+                                <TextInput placeholder={"Discount"}
+                                    placeholderTextColor={"#6A6A8B"}
+                                    value={discount}
+                                    onChangeText={(val) => {
+
+                                        setDiscount(val)
+                                    }}
+
+                                    style={[styles.input,
+                                    { fontFamily: "Poppins-Medium" },
+                                    { fontSize: 14 },
+                                    {
+                                        color: "#F5F5FA",
+                                        paddingLeft: 10
+                                    }
+
+                                    ]
+
+                                    }
+
+                                />
+                            </View>
+                            <Button title='Apply' onPress={() => {
+                                if (discount == "discount1") {
+                                    setPrice(price * 0.85);
+
+                                }
+                            }} />
+
+                        </View>
                         <CustomText textValue={"Total"} fontSize={16} color={"#F5F5FA"}
                             fontFamily={"Poppins-SemiBold"} marginBottom={16}
                         />
@@ -153,7 +189,7 @@ const SelectCreditCard = () => {
                                     fontFamily={"Poppins-Regular"} marginBottom={14}
                                 />
                             </View>
-                            <CustomText height={20} textValue={calculatePrice(bookingInfo.seatCount)} fontSize={18} color={"#F5F5FA"}
+                            <CustomText height={20} textValue={price + " USD"} fontSize={18} color={"#F5F5FA"}
                                 fontFamily={"Poppins-SemiBold"} marginBottom={14}
                             />
                         </View>
@@ -179,6 +215,20 @@ const SelectCreditCard = () => {
     )
 }
 const styles = StyleSheet.create({
+    applyDiscount: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 16
+    },
+    discountInput: {
+        width: 250,
+        paddingVertical: 5,
+        backgroundColor: "#1C1C4D",
+        borderColor: "gray",
+        borderRadius: 3,
+        borderWidth: 1
+
+    },
     cardSelection: {
         marginBottom: 24
     },

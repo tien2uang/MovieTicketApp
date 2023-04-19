@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TextInput, Button, Pressable } from 'react-native';
 
-const IconButton2 = ({ onPress, imgSrc, backgroundColor, fgColor, width, height, borderColor, borderWidth, borderRadius, marginLeft }) => {
+const IconButton2 = ({ onPress, imgSrc, backgroundColor, marginTop, fgColor, width, height, borderColor, borderWidth, borderRadius, marginLeft }) => {
     return (
         <Pressable
             style={[
@@ -10,13 +10,16 @@ const IconButton2 = ({ onPress, imgSrc, backgroundColor, fgColor, width, height,
                 width ? { width: width } : {},
                 height ? { height: height } : {},
                 marginLeft ? { marginLeft: marginLeft } : {},
+                marginTop ? { marginTop: marginTop } : {},
 
 
             ]}
             onPress={onPress}
         >
             <Image
+
                 source={imgSrc}
+
             />
         </Pressable>
     )

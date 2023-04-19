@@ -23,8 +23,10 @@ import axios from 'axios';
 import { API_HOST } from "@env";
 import ArrowLeft from "../../../assets/img/arrow-left.png";
 import IconButton from '../../components/IconButton';
+import Send from "../../../assets/img/Send.png";
 import IconButton2 from '../../components/IconButtonV2';
 import WebView from 'react-native-webview';
+import Comment from '../../components/Comment';
 
 
 
@@ -44,7 +46,7 @@ const MovieDetail = () => {
             "x-access-token": token
         }
     }
-    console.log(token)
+
     const navigation = useNavigation();
     const route = useRoute();
     const item = route.params.item;
@@ -56,8 +58,9 @@ const MovieDetail = () => {
         const getReviews = async () => {
             try {
                 const res = await axios.get(`${API_HOST}/api/movies/review/${item.movieID}`, axiosOptions);
-                console.log(res.data);
-                setReviews(res.data);
+                const arrayReview = res.data;
+                setReviews(arrayReview.reverse());
+
             }
             catch (err) {
                 console.log(err.response);
@@ -65,7 +68,7 @@ const MovieDetail = () => {
         }
 
         getReviews();
-        console.log(item)
+
 
     }, []);
     const postReview = async () => {
@@ -73,20 +76,33 @@ const MovieDetail = () => {
             movieID: item.movieID,
             review: currentReview
         }
-        try {
-            const res = await axios.put(`${API_HOST}/api/users/review`, data, axiosOptions);
-            console.log(res.data);
-            if (res.data.message == "Success") {
-                setCurrentReview("");
-                const res1 = await axios.get(`${API_HOST}/api/movies/review/${item.movieID}`, axiosOptions);
-                setReviews(res1.data);
+        if (currentReview != "") {
+            if (currentReview == "shit" || currentReview == "fucking bad") {
+                alert("Bad word")
+            }
+            else {
 
+                try {
+                    const res = await axios.put(`${API_HOST}/api/users/review`, data, axiosOptions);
+                    console.log(res.data);
+                    if (res.data.message == "Success!") {
+                        setCurrentReview("");
+                        console.log("fetch")
+                        const res1 = await axios.get(`${API_HOST}/api/movies/review/${item.movieID}`, axiosOptions);
+                        console.log("fetch xong");
+                        console.log(res1.data);
+                        const arrayReview = res1.data;
+                        setReviews(arrayReview.reverse());
+
+                    }
+
+
+                }
+                catch (err) {
+                    console.log(err);
+                }
             }
 
-
-        }
-        catch (err) {
-            console.log(err);
         }
 
     }
@@ -129,18 +145,18 @@ const MovieDetail = () => {
                             <View style={styles.right} >
                                 <View style={styles.box} >
                                     <Text style={styles.text_box}> <Icon name='th-large' style={{ fontSize: 20, color: '#FFFFFF' }} /> </Text>
-                                    <CustomText textValue={"Category"} fontSize={12} color={"white"} />
+                                    <CustomText textValue={"Category"} fontSize={12} color={"#B0BEC5"} />
                                     <CustomText textValue={item.category} fontSize={14} color={"white"} />
 
                                 </View>
                                 <View style={styles.box} >
                                     <Text style={styles.text_box}> <Icon name='clock-o' style={{ fontSize: 20, color: '#FFFFFF' }} /> </Text>
-                                    <CustomText textValue={"Duration"} fontSize={12} color={"white"} />
+                                    <CustomText textValue={"Duration"} fontSize={12} color={"#B0BEC5"} />
                                     <CustomText textValue={item.duration} fontSize={14} color={"white"} />
                                 </View>
                                 <View style={styles.box} >
                                     <Text style={styles.text_box}> <Icon name='star' style={{ fontSize: 20, color: '#FFFFFF' }} /> </Text>
-                                    <CustomText textValue={"Rating"} fontSize={12} color={"white"} />
+                                    <CustomText textValue={"Rating"} fontSize={12} color={"#B0BEC5"} />
                                     <CustomText textValue={"8.0"} fontSize={14} color={"white"} />
                                 </View>
                             </View>
@@ -158,12 +174,12 @@ const MovieDetail = () => {
                                 fontSize={14}
                                 color={"white"}
                                 fontFamily={"Poppins-Regular"}
-                                marginBottom={16}
+                                marginBottom={8}
                             />
 
                         </View>
                         <View style={[styles.container, styles.synosis]}>
-                            <CustomText textValue={"TRAILER"} fontSize={16} color={"white"} fontFamily={"Poppins-SemiBold"} marginBottom={8} />
+                            <CustomText textValue={"TRAILER"} fontSize={16} color={"white"} fontFamily={"Poppins-SemiBold"} marginBottom={16} />
                             <View>
                                 <YoutubePlayer
 
@@ -188,17 +204,25 @@ const MovieDetail = () => {
                         </View>
 
 
-                        <View>
-                            <CustomInput placeholder={"Add review"} onChangeText={(val) => { setCurrentReview(val) }} />
+                        <View style={[styles.container, styles.synosis]}>
 
-                            <Button title={"Post"} onPress={() => postReview()} />
+                            <CustomText textValue={"REVIEW"} fontSize={16} color={"white"} fontFamily={"Poppins-SemiBold"} marginBottom={16} />
+                            <View style={styles.addReview}>
+                                <CustomInput placeholder={"Add review"} value={currentReview} onChangeText={(val) => { setCurrentReview(val) }} />
+                                <IconButton2 imgSrc={Send} onPress={() => postReview()} marginTop={10} marginLeft={5} />
+
+
+                            </View>
+
+
 
                             {reviews.map((review) =>
 
-                                <View key={review.index} >
-                                    <CustomText textValue={review.username} />
-                                    <CustomText textValue={review.review} />
-                                </View>
+
+
+
+                                <Comment username={review.username} text={review.review} key={review.index} />
+
 
                             )}
                         </View>
@@ -220,7 +244,7 @@ const styles = StyleSheet.create({
     a: {
         height: "100%",
         width: "100%",
-        backgroundColor: '#263238',
+        backgroundColor: '#0F0F29',
 
     },
     container: {
@@ -312,6 +336,7 @@ const styles = StyleSheet.create({
     act: {
 
         alignItems: 'center',
+        marginBottom: 30
 
     },
     button: {
@@ -322,6 +347,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5,
     },
+    addReview: {
+        flexDirection: "row",
+        justifyContent: "space-between"
+
+    }
 
 });
 export default MovieDetail;

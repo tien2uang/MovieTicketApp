@@ -261,7 +261,7 @@ const HomeTab = () => {
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: "#263238",
+    backgroundColor: "#0F0F29",
     width: "100%",
     height: "100%"
   },

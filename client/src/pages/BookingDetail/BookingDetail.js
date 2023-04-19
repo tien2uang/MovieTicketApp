@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
         marginLeft: 32
     },
     qrCode: {
+        marginBottom: 32
 
     }
 

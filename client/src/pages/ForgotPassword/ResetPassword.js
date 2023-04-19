@@ -23,6 +23,7 @@ import axios from 'axios';
 import { API_HOST } from '@env';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert } from 'react-native';
 
 
 const ResetPassword = () => {
@@ -49,6 +50,7 @@ const ResetPassword = () => {
                 console.log(res.data)
                 if (res.data.message == "You have successfully change your password!") {
                     console.log(res.data.message)
+                    Alert.alert(res.data.message);
                 }
             } catch (err) {
                 console.log(err)
@@ -93,8 +95,8 @@ const ResetPassword = () => {
                             setConfirmPassword(val)
                         }} onFocus={() => { setWarning('') }} security={true} />
                         <CustomText
-                            // textValue={warning}
-                            textValue={"Wrong"}
+                            textValue={warning}
+                            // textValue={"Wrong"}
                             fontSize={14} color={"#FF7F71"}
                             fontFamily={"Poppins-SemiBold"}
                             marginBottom={12}

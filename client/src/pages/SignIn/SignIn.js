@@ -25,7 +25,7 @@ const SignIn = () => {
   };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [warning, setWarning] = useState("Warning");
+  const [warning, setWarning] = useState("");
 
   const { dispatch } = useContext(AppContext);
   const navigation = useNavigation();

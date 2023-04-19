@@ -28,8 +28,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const ConfirmResetCode = () => {
     const navigation = useNavigation();
     const route = useRoute();
-    // const email = route.params.email;
-    const email = "20020116@vnu.edu.vn";
+    const email = route.params.email;
+    // const email = "20020116@vnu.edu.vn";
     const [resetCode, setResetCode] = useState("");
     const resendCode = async () => {
         try {

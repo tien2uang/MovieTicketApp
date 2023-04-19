@@ -64,8 +64,8 @@ const SelectSeat = () => {
     <View key={`status${index}`} style={styles.statusItem}>
       <View
         style={{
-          width: 18,
-          height: 18,
+          width: 20,
+          height: 20,
           backgroundColor: `${item.backgroundColor}`,
         }}
       ></View>
@@ -303,7 +303,7 @@ const SelectSeat = () => {
             <Text style={styles.headerText}>SELECT SEATS</Text>
           </View>
 
-          <View styles={styles.selectSeets}>
+          <View styles={styles.selectSeats}>
             <View style={styles.divider}></View>
             <View>
 
@@ -394,14 +394,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     height: vh(50),
     position: "relative",
-    backgroundColor: "#263238",
+    backgroundColor: "#0F0F29",
   },
   //Header Title
   headerTitle: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 24,
-    // marginTop: 50,
+    marginTop: 24,
   },
   headerText: {
     color: "#fff",
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
   },
   //Time Container
   timeContainer: {
-    backgroundColor: "#37474F",
+    backgroundColor: "#1F2343",
     paddingTop: 15,
     paddingBottom: 20,
     paddingHorizontal: 25,

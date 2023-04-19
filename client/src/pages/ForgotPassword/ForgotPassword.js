@@ -32,12 +32,12 @@ const ForgotPassword = () => {
             email: email
         }
         try {
-            navigation.navigate("ConfirmResetCode", data);
-            // const res = await axios.post(`${API_HOST}/api/auth/forgotpassword`, data);
-            // if (res.data.message == "Please check your email for confirmation!") {
-            //     console.log(res.data.message)
-            //     navigation.navigate("ConfirmResetCode", data);
-            // }
+            // navigation.navigate("ConfirmResetCode", data);
+            const res = await axios.post(`${API_HOST}/api/auth/forgotpassword`, data);
+            if (res.data.message == "Please check your email for confirmation!") {
+                console.log(res.data.message)
+                navigation.navigate("ConfirmResetCode", data);
+            }
         }
         catch (err) {
             console.log(err)

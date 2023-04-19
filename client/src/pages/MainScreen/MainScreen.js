@@ -19,6 +19,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeTab from './MainScreenTabs/HomeTab';
 import SearchTab from "./MainScreenTabs/SearchTab";
 import ProfileTab from './MainScreenTabs/ProfileTab';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 
 const playingNowData = [
@@ -63,36 +65,65 @@ const MainScreen = () => {
 
         <Tab.Navigator
             initialRouteName='Home'
-            screenOptions={{
+
+            screenOptions={({ route }) => ({
                 headerShown: false,
+                tabBarInactiveTintColor: "#BBB1FA",
+                tabBarActiveTintColor: '#FFFFFF',
                 tabBarStyle: {
                     backgroundColor: "#0F0F29",
                     borderTopWidth: 0
 
-                }
+                },
+                tabBarIcon: ({ color, size, focused }) => {
+                    let iconName;
+                    if (route.name === 'Home') {
+                        iconName = focused ? 'home' : 'home-outline';
+                    } else if (route.name === 'Search') {
+                        iconName = focused ? 'search' : 'search-outline';
+                    } else if (route.name === 'Profile') {
+                        iconName = focused ? 'library' : 'library-outline';
+                    }
 
-            }}
+                    return <Ionicons name={iconName} size={24} color={color} />;
+                },
+            })}
+
+
 
         >
             <Tab.Screen
                 name='Home'
                 component={HomeTab}
                 options={{
-                    title: "Home"
+                    title: "Home",
+                    // tabBarStyle: {
+                    //     paddingBottom: 5
+                    // }
+                    tabBarLabelStyle: {
+                        marginBottom: 1.5
+                    }
                 }}
             />
             <Tab.Screen
                 name='Search'
                 component={SearchTab}
                 options={{
-                    title: "Search"
+                    title: "Search",
+                    tabBarLabelStyle: {
+                        marginBottom: 1.5
+                    }
+
                 }}
             />
             <Tab.Screen
                 name='Profile'
                 component={ProfileTab}
                 options={{
-                    title: "Profile"
+                    title: "Profile",
+                    tabBarLabelStyle: {
+                        marginBottom: 1.5
+                    }
                 }}
             />
 
