@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import { API_HOST, token } from "@env";
+import CustomText from "../../components/CustomText";
 
 const WishlistItem = (props) => {
   const navigation = useNavigation();
@@ -49,10 +50,22 @@ const WishlistItem = (props) => {
           navigation.navigate("MovieDetail", { item: movie });
         }}
       >
-        <Text style={styles.nameOfFilm}>{movie.title}</Text>
+        <CustomText textValue={movie.title} color={"white"} fontSize={20} />
 
-        <Text style={styles.director}>Director: {movie.director}</Text>
-        <Text style={styles.info}>Category: {movie.category}</Text>
+        {/* <Text style={styles.director}>Director: {movie.director}</Text>
+        <Text style={styles.info}>Category: {movie.category}</Text> */}
+
+        <CustomText
+          textValue={"Director: " + movie.director}
+          color={"white"}
+          fontSize={14}
+          marginTop={10}
+        />
+        <CustomText
+          textValue={"Category: " + movie.category}
+          color={"white"}
+          fontSize={14}
+        />
 
         <Text style={styles.price}>{movie.ticketCount}$</Text>
         <Text
@@ -95,20 +108,21 @@ const styles = StyleSheet.create({
     top: 10,
     color: "white",
     fontWeight: 300,
-    fontSize: 25,
+    fontSize: 20,
+    fontFamily: "Poppins-Regular",
   },
   star: {
     position: "absolute",
     right: 0,
-    top: 50,
-    fontSize: 20,
+    top: 40,
+    fontSize: 14,
     color: "white",
   },
   notStar: {
     position: "absolute",
     right: 0,
-    top: 50,
-    fontSize: 20,
+    top: 40,
+    fontSize: 14,
     color: "blue",
   },
 });

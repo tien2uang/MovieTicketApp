@@ -30,7 +30,6 @@ const Wishlist = () => {
       "x-access-token": token,
     },
   };
-  
   console.log(wishlist);
   console.log(movies);
 
@@ -53,7 +52,7 @@ const Wishlist = () => {
         const fetchedMovies = movieResults.map((result) => result.data);
         setMovies(fetchedMovies);
       } catch (error) {
-        console.error(error);
+        console.error(error, "ko fetch dc");
       }
     };
     fetchData();
@@ -63,54 +62,41 @@ const Wishlist = () => {
     <SafeAreaView>
       <View style={styles.background}>
         <ScrollView>
-          {/* <CustomText textValue={"Wishlist"} /> */}
           <View style={styles.header}>
-            <Text style={styles.wishlist}>Wishlist</Text>
+            <CustomText textValue={"Wishlist"} color={"white"} fontSize={24} />
           </View>
 
-          {/* <View style={styles.body}> */}
           {movies?.length == 0 ? (
             <View style={styles.noWishlist}>
-              <Text style={{ color: "white", fontSize: 20 }}>
-                Bạn chưa có phim yêu thích nào
-              </Text>
+
+              <CustomText
+                textValue={"No movie added to Wishlist"}
+                color={"white"}
+                fontSize={20}
+              />
             </View>
           ) : (
             <View style={styles.body}>
               {movies?.map((item, index) => {
                 // return <View key={index}></View>;
                 return <WishlistItem key={index} movies={item} />;
-                // return (
-                //   <Pressable
-                //     key={index}
-                //     style={styles.item}
-                //     onPress={() => {
-                //       console.log("click");
-                //       navigation.navigate("MovieDetail", { item: item });
-                //     }}
-                //   >
-                //     <Text style={styles.nameOfFilm}>{item}</Text>
-
-                //     <Text style={styles.director}>
-                //       Director: {item.director}
-                //     </Text>
-                //     <Text style={styles.info}>Category: {item.category}</Text>
-
-                //     <Text style={styles.price}>{item.ticketCount}$</Text>
-                //     <Text style={styles.icon}>star</Text>
-                //   </Pressable>
-                // );
               })}
             </View>
           )}
           {/* </View> */}
 
-          <Button
-            title="Back"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <CustomButton
+              onPress={() => {
+                navigation.goBack();
+              }}
+              text="Back"
+              bgColor="#4838D1"
+              w={295}
+              h={56}
+              pad={15}
+            />
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>

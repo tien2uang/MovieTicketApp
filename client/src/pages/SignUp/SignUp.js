@@ -97,7 +97,10 @@ const SignUp = () => {
                         <CustomInput placeholder={"Confirm your password"} security={true} value={confirmPassword} onChangeText={(val) => setConfirmPassword(val)} onFocus={() => { setWarning("") }} />
                         <CustomInput placeholder={"Phone number"} value={phoneNumber} onChangeText={(val) => setPhoneNumber(val)} onFocus={() => { setWarning("") }} />
 
-                        <CustomText textValue={warning} />
+
+                        <CustomText textValue={warning}
+                            fontSize={14} color={"#D77260"}
+                            fontFamily={"Poppins-Medium"} />
 
                         <CustomButton
                             onPress={() => {

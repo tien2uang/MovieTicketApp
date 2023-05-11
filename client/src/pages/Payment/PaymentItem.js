@@ -4,6 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import { API_HOST, token } from "@env";
+import CustomText from "../../components/CustomText";
 
 const PaymentItem = (props) => {
   // const { token } = useContext(AppContext);
@@ -17,7 +18,7 @@ const PaymentItem = (props) => {
   const [theater, setTheater] = useState();
 
   console.log(movieDetail);
-  console.log(theater);
+  // console.log(theater);
 
   const createdAtDate = new Date(movie.createdAt);
   const day = createdAtDate.getDate().toString().padStart(2, "0");
@@ -26,6 +27,7 @@ const PaymentItem = (props) => {
   const formattedDate = `${day}/${month}/${year}`;
 
   useEffect(() => {
+    // console.log("fetch");
     const getShowtime = async () => {
       try {
         const res = await axios.get(
@@ -59,19 +61,31 @@ const PaymentItem = (props) => {
   return (
     <View>
       <View style={styles.item}>
-        <Text style={styles.nameOfFilm}>{movieDetail?.title}</Text>
+        {/* <Text style={styles.nameOfFilm}>{movieDetail?.title}</Text> */}
+        <CustomText
+          textValue={movieDetail?.title}
+          color={"white"}
+          fontSize={22}
+        />
         <View style={styles.info}>
           {movie.seatID.map((seat, index) => {
             return (
-              <Text key={index} style={{ color: "white", fontSize: 15 }}>
-                {seat}{" "}
-              </Text>
+              <CustomText
+                key={index}
+                color={"white"}
+                fontSize={15}
+                textValue={seat}
+              />
             );
           })}
-          {/* <Text style={{ color: "white", fontSize: 15 }}></Text> */}
         </View>
-        <Text style={{ color: "white", fontSize: 15 }}>{formattedDate}</Text>
-        <Text style={styles.nameOfTheater}>{theater?.theater_name}</Text>
+
+        <CustomText textValue={formattedDate} color={"white"} fontSize={14} />
+        <CustomText
+          textValue={theater?.theater_name}
+          color={"white"}
+          fontSize={14}
+        />
         <Text style={styles.price}>{movie.price}$</Text>
       </View>
     </View>
@@ -96,7 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "space-between",
     gap: 10,
-    marginTop: 20,
+    marginTop: 18,
   },
   nameOfTheater: {
     fontSize: 15,
@@ -108,6 +122,7 @@ const styles = StyleSheet.create({
     top: 15,
     color: "white",
     fontWeight: 300,
-    fontSize: 25,
+    fontSize: 20,
+    fontFamily: "Poppins-Regular",
   },
 });

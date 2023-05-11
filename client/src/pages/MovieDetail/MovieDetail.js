@@ -85,7 +85,9 @@ const MovieDetail = () => {
                 try {
                     const res = await axios.put(`${API_HOST}/api/users/review`, data, axiosOptions);
                     console.log(res.data);
-                    if (res.data.message == "Success!") {
+                    if (res.data.message == "no") {
+                        alert("Inappropriate words!")
+                    } else if (res.data.message == "Success!") {
                         setCurrentReview("");
                         console.log("fetch")
                         const res1 = await axios.get(`${API_HOST}/api/movies/review/${item.movieID}`, axiosOptions);

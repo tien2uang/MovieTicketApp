@@ -1,5 +1,5 @@
 import {
-  SafeAreaView,
+
   StyleSheet,
   Text,
   View,
@@ -7,15 +7,16 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import CustomText from "../../../components/CustomText";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../../context/AppContext";
 import axios from "axios";
 import { API_HOST, token } from "@env";
 
 const ProfileTab = () => {
-  // const { token } = useContext(AppContext);
+  const { token } = useContext(AppContext);
   const navigation = useNavigation();
   const axiosOptions = {
     headers: {
@@ -24,11 +25,13 @@ const ProfileTab = () => {
   };
 
   const [user, setUser] = useState({});
-  console.log(token);
-  console.log(user);
+  console.log(API_HOST);
+  // console.log(user);
+  // edit/phone
 
   useEffect(() => {
     const getInfoUser = async () => {
+      console.log("fetch");
       try {
         const res = await axios.get(
           `${API_HOST}/api/users/profile`,
@@ -54,57 +57,83 @@ const ProfileTab = () => {
           style={styles.img}
         />
         <View style={styles.textwrap}>
-          <Text style={styles.name}>{user?.username}</Text>
-          <Text style={styles.email}>{user?.email}</Text>
+          <CustomText
+            textValue={user?.username}
+            fontSize={24}
+            marginTop={0}
+            color={"white"}
+          />
+          <CustomText
+            textValue={user?.email}
+            fontSize={16}
+            marginTop={0}
+            color={"white"}
+          />
         </View>
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.textAccount}>Account</Text>
+        <CustomText
+          textValue={"Account"}
+          fontSize={24}
+          color={"white"}
+          // paddingLeft={30}
+          marginLeft={30}
+        />
         <View style={styles.itemWrap}>
-          <TouchableOpacity>
-            <Text
-              onPress={() => {
-                navigation.navigate("ProfileScreen");
-              }}
-              style={styles.item}
-            >
-              Profile
-            </Text>
+          <TouchableOpacity
+            onPress={() => {
+              console.log("navigate")
+              navigation.navigate("Profile");
+            }}
+          >
+            <CustomText
+              textValue={"Profile"}
+              fontSize={16}
+              color={"white"}
+              marginTop={10}
+            />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={styles.item}
-              onPress={() => {
-                navigation.navigate("Payment");
-              }}
-            >
-              Payment
-            </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Payment");
+            }}
+          >
+            <CustomText
+              textValue={"Payment"}
+              fontSize={16}
+              color={"white"}
+              marginTop={10}
+            />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={styles.item}
-              onPress={() => {
-                navigation.navigate("Wishlist");
-              }}
-            >
-              Wishlist
-            </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Wishlist");
+            }}
+          >
+            <CustomText
+              textValue={"Wishlist"}
+              fontSize={16}
+              color={"white"}
+              marginTop={10}
+            />
           </TouchableOpacity>
         </View>
       </View>
 
       <View>
-        <TouchableOpacity style={styles.logout}>
-          <Text
-            style={styles.item}
-            onPress={() => {
-              navigation.navigate("SignIn");
-            }}
-          >
-            Logout
-          </Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("SignIn");
+          }}
+          style={styles.logout}
+        >
+          <CustomText
+            textValue={"Logout"}
+            fontSize={16}
+            color={"white"}
+            marginTop={10}
+          />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -123,8 +152,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   img: {
-    width: 55,
-    height: 55,
+    width: 56,
+    height: 56,
     borderRadius: 50,
   },
   textwrap: {
@@ -135,13 +164,13 @@ const styles = StyleSheet.create({
   email: {
     color: "white",
     marginTop: 4,
-    fontSize: 15,
+    fontSize: 16,
   },
 
   name: {
     marginTop: 0,
     color: "white",
-    fontSize: 25,
+    fontSize: 24,
   },
 
   //body
@@ -150,7 +179,7 @@ const styles = StyleSheet.create({
   },
   textAccount: {
     fontWeight: 400,
-    fontSize: 30,
+    fontSize: 24,
     color: "white",
     paddingLeft: 30,
   },
@@ -163,7 +192,7 @@ const styles = StyleSheet.create({
   item: {
     color: "white",
     marginTop: 10,
-    fontSize: 20,
+    fontSize: 16,
   },
   logout: {
     backgroundColor: "#37474F",

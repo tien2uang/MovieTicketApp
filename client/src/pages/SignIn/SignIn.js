@@ -17,7 +17,7 @@ import { useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { API_HOST } from "@env";
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from "react-native-gesture-handler";
 
 const SignIn = () => {
   const data = {
@@ -37,7 +37,7 @@ const SignIn = () => {
       email: email,
       password: password,
     };
-    console.log(data);
+    console.log(API_HOST);
 
     try {
       const res = await axios.post(`${API_HOST}/api/auth/signin`, data);
@@ -153,15 +153,14 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: "#0F0F29",
     width: "100%",
-    height: "100%"
-
+    height: "100%",
   },
   header: {
     flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    justifyContent: "flex-end",
+    alignItems: "center",
     height: 180,
-    width: '100%',
+    width: "100%",
   },
   content: {
     flex: 1,
@@ -169,13 +168,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     // position: "absolute",
     width: 295,
-    marginLeft: 45
+    marginLeft: 45,
 
     // left: 40,
     // top: 204,
-
-
-
   },
   signInOption: {
     flex: 1,
@@ -183,9 +179,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginTop: 8
-
-  }
-
-})
+    marginTop: 8,
+  },
+});
 export default SignIn;

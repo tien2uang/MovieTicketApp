@@ -5,13 +5,17 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
+  ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import { API_HOST, token } from "@env";
+import CustomButton from "../../components/CustomButton";
+import CreditCard2 from "../../components/CreditCard";
+import CustomInput from "../../components/CustomInput";
 
 const CreditCard = () => {
   // const { token } = useContext(AppContext);
@@ -28,21 +32,23 @@ const CreditCard = () => {
   const [addCreditCard, setAddCreditCard] = useState(false);
   const [edit, setEdit] = useState(false);
 
+  const getBalance = useCallback(async () => {
+    try {
+      const result = await axios.get(
+        `${API_HOST}/api/users/balance`,
+        axiosOptions
+      );
+      console.log(result.data);
+      setCreditCardList(result.data);
+    } catch (error) {
+      console.log("fetch looix");
+      let response = error.response.data;
+      console.log(response);
+    }
+  }, []);
+
   useEffect(() => {
-    const getBalance = async () => {
-      try {
-        const result = await axios.get(
-          `${API_HOST}/api/users/balance`,
-          axiosOptions
-        );
-        console.log(result.data);
-        setCreditCardList(result.data);
-      } catch (error) {
-        console.log("fetch looix");
-        let response = error.response.data;
-        console.log(response);
-      }
-    };
+    console.log("fetch");
     getBalance();
   }, []);
 
@@ -89,6 +95,7 @@ const CreditCard = () => {
         const Response = res.data;
         console.log(Response);
         alert("Thêm credit card thành công");
+        getBalance();
         setAddCreditCard(false);
       } catch (error) {
         let response = error.response.data;
@@ -99,66 +106,53 @@ const CreditCard = () => {
 
   return (
     <View style={styles.background}>
-      <View style={styles.headerWrap}>
-        <Text style={styles.header}>Credit card</Text>
-      </View>
+      <ScrollView>
+        <View style={styles.headerWrap}>
+          <Text style={styles.header}>Credit card</Text>
+        </View>
 
-      <View style={styles.body}>
-        {creditCardList?.length == 0 ? (
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 20,
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 15 }}>
-              Bạn chưa có thẻ tín dụng nào
-            </Text>
-          </View>
-        ) : (
-          creditCardList?.map((item, index) => {
-            return (
-              <View key={index}>
-                {edit ? (
-                  <View style={styles.itemEdit}>
-                    <Text style={styles.text}>Credit card {index + 1}</Text>
-                    <TextInput
-                      onChangeText={(text) => setCreditCard(text)}
-                      defaultValue={item.credit_card_number}
-                      style={styles.inputText}
-                      keyboardType="number-pad"
-                    />
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleUpdateCreditCard(item.credit_card_number);
-                      }}
-                    >
-                      <Text style={styles.update}>update</Text>
-                    </TouchableOpacity>
-                    {/* <TouchableOpacity
-                      onPress={() => {
-                        setEdit(false);
-                      }}
-                    >
-                      <Text style={styles.cancel}>cancel</Text>
-                    </TouchableOpacity> */}
-                  </View>
-                ) : (
+        <View style={styles.body}>
+          {creditCardList?.length == 0 ? (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 15,
+                  fontFamily: "Poppins-Regular",
+                }}
+              >
+                Bạn chưa có thẻ tín dụng nào
+              </Text>
+            </View>
+          ) : (
+            creditCardList?.map((item, index) => {
+              return (
+                <View key={index}>
                   <View style={{ marginBottom: 10 }}>
-                    <View style={styles.item}>
+                    {/* <View style={styles.item}>
                       <Text
                         style={{
                           color: "white",
                           fontSize: 20,
                           fontWeight: 400,
+                          fontFamily: "Poppins-Regular",
                         }}
                       >
                         Credit card {index + 1}
                       </Text>
-
                       <Text
-                        style={{ color: "white", fontSize: 15, marginTop: 15 }}
+                        style={{
+                          color: "white",
+                          fontSize: 15,
+                          marginTop: 0,
+                          fontFamily: "Poppins-Regular",
+                        }}
                       >
                         {item.credit_card_number}
                       </Text>
@@ -169,88 +163,97 @@ const CreditCard = () => {
                           right: 15,
                           color: "white",
                           fontSize: 15,
+                          fontFamily: "Poppins-Regular",
                         }}
                       >
-                        {item.balance}
+                        {item.balance}$
                       </Text>
-                      {/* <TouchableOpacity
-                        onPress={() => {
-                          setEdit(true);
-                        }}
-                      >
-                        <Text
-                          style={{
-                            position: "absolute",
-                            top: -30,
-                            right: 15,
-                            color: "white",
-                            fontSize: 20,
-                          }}
-                        >
-                          edit
-                        </Text>
-                      </TouchableOpacity> */}
-                    </View>
+                    </View> */}
+                    {/* EditCreditCard */}
+                    <CreditCard2
+                      name={"Credit card " + `${index + 1}`}
+                      cardNumber={item.credit_card_number}
+                      expiredDate={item.balance + "$"}
+                      onPress={() => {
+                        console.log("click");
+                        navigation.navigate("EditCreditCard", { item: item });
+                      }}
+                    />
                   </View>
-                )}
-              </View>
-            );
-          })
+                </View>
+              );
+            })
+          )}
+
+          {addCreditCard && (
+            <View style={styles.itemEdit}>
+              <Text style={styles.text}>Enter Credit card</Text>
+              <CustomInput
+                placeholder={"Credit card"}
+                keyboardType="number-pad"
+                onChangeText={(text) => setCreditCard(text)}
+              />
+              <TouchableOpacity onPress={handleAddCreditCard}>
+                <Text style={styles.update}>Add</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setAddCreditCard(false);
+                }}
+              >
+                <Text style={styles.cancel}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
+        {!addCreditCard ? (
+          <TouchableOpacity
+            onPress={() => setAddCreditCard(true)}
+            style={{
+              width: 200,
+              height: 40,
+              backgroundColor: "#4838D1",
+              // marginTop: 20,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 5,
+              marginLeft: 100,
+              marginBottom: 40,
+            }}
+          >
+            <Text style={{ color: "white", fontFamily: "Poppins-Regular" }}>
+              Add Credit Card
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <></>
         )}
 
-        {addCreditCard && (
-          <View style={styles.itemEdit}>
-            <Text style={styles.text}>Enter Credit card</Text>
-            <TextInput
-              onChangeText={(text) => setCreditCard(text)}
-              placeholder=""
-              style={styles.inputText}
-              keyboardType="number-pad"
-            />
-            <TouchableOpacity onPress={handleAddCreditCard}>
-              <Text style={styles.update}>add</Text>
-            </TouchableOpacity>
-
-            {/* <TouchableOpacity
-              onPress={() => {
-                setAddCreditCard(false);
-              }}
-            >
-              <Text style={styles.cancel}>cancel</Text>
-            </TouchableOpacity> */}
-          </View>
-        )}
-      </View>
-
-      <Button title="Add Credit" onPress={() => setAddCreditCard(true)} />
-      <Button
-        style={{ marginTop: 10 }}
-        title="Edit Credit"
-        onPress={() => setEdit(true)}
-      />
-      {edit ? <Button title="Cancel" onPress={() => setEdit(false)} /> : <></>}
-
-      <TouchableOpacity
-        onPress={() => {
-          console.log("bakc");
-          navigation.goBack();
-        }}
-        // title="bakc"
-        style={{
-          position: "absolute",
-          color: "white",
-          top: 40,
-          left: 20,
-        }}
-      >
-        <Text
+        <TouchableOpacity
+          onPress={() => {
+            console.log("bakc");
+            navigation.goBack();
+          }}
+          // title="bakc"
           style={{
+            position: "absolute",
             color: "white",
+            top: 40,
+            left: 20,
           }}
         >
-          Back
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "Poppins-Regular",
+            }}
+          >
+            Back
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -273,11 +276,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 25,
     fontWeight: 400,
+    fontFamily: "Poppins-Regular",
   },
 
   body: {
-    marginTop: 50,
-    paddingHorizontal: 15,
+    marginTop: 30,
+    paddingHorizontal: 25,
   },
 
   itemEdit: {
@@ -288,6 +292,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     marginBottom: 5,
     color: "white",
+    fontFamily: "Poppins-Regular",
   },
   inputText: {
     fontSize: 16,
@@ -299,16 +304,18 @@ const styles = StyleSheet.create({
   update: {
     color: "white",
     position: "absolute",
-    right: 0,
-    top: -55,
+    right: 10,
+    top: -70,
     opacity: 0.5,
+    fontFamily: "Poppins-Regular",
   },
   cancel: {
     color: "white",
     position: "absolute",
-    right: 0,
-    top: -35,
+    right: -10,
+    top: -40,
     opacity: 0.5,
+    fontFamily: "Poppins-Regular",
   },
   item: {
     paddingLeft: 10,

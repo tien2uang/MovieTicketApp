@@ -5,28 +5,23 @@
  * @format
  */
 
-import React, { useEffect, useState, useCallback } from 'react';
-import { SvgXml } from 'react-native-svg';
-import { useFonts } from 'expo-font';
+import React, { useEffect, useState, useCallback } from "react";
+import { SvgXml } from "react-native-svg";
+import { useFonts } from "expo-font";
 
+import { StyleSheet, View } from "react-native";
 
-
-import {
-  StyleSheet, View,
-} from 'react-native';
-
-
-import ForgotPassword from './src/pages/ForgotPassword/ForgotPassword';
-import MainScreen from './src/pages/MainScreen/MainScreen';
-import SignIn from './src/pages/SignIn/SignIn';
-import SignUp from './src/pages/SignUp/SignUp';
-import ConfirmRegister from './src/pages/ConfirmRegister/ConfirmRegister';
-import { NavigationContainer } from '@react-navigation/native';
-import 'react-native-gesture-handler';
-import { createStackNavigator } from '@react-navigation/stack';
-import MovieDetail from './src/pages/MovieDetail/MovieDetail';
-import TransactionDetail from './src/pages/TransactionDetail/TransactionDetail';
-import BookingDetail from './src/pages/BookingDetail/BookingDetail';
+import ForgotPassword from "./src/pages/ForgotPassword/ForgotPassword";
+import MainScreen from "./src/pages/MainScreen/MainScreen";
+import SignIn from "./src/pages/SignIn/SignIn";
+import SignUp from "./src/pages/SignUp/SignUp";
+import ConfirmRegister from "./src/pages/ConfirmRegister/ConfirmRegister";
+import { NavigationContainer } from "@react-navigation/native";
+import "react-native-gesture-handler";
+import { createStackNavigator } from "@react-navigation/stack";
+import MovieDetail from "./src/pages/MovieDetail/MovieDetail";
+import TransactionDetail from "./src/pages/TransactionDetail/TransactionDetail";
+import BookingDetail from "./src/pages/BookingDetail/BookingDetail";
 import SelectSeat from "./src/pages/SelectSeat/SelectSeat";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppContextProvider } from './src/context/AppContext';
@@ -96,12 +91,12 @@ function Stacks() {
         component={Payment}
       />
       <Stack.Screen
-        name='Wishlist'
-        component={Wishlist}
+        name='Profile'
+        component={Profile}
       />
       <Stack.Screen
-        name='ProfileScreen'
-        component={Profile}
+        name='Wishlist'
+        component={Wishlist}
       />
       <Stack.Screen
         name='SelectCreditCard'
@@ -124,16 +119,13 @@ function Stacks() {
   );
 }
 
-
-
 function App() {
-
   const [fontsLoaded] = useFonts({
-    'Poppins-Regular': require('./assets/fonts/PoppinsRegular400.ttf'),
-    'Poppins-Bold': require("./assets/fonts/PoppinsBold700.ttf"),
-    'Poppins-SemiBold': require("./assets/fonts/PoppinsSemiBold600.ttf"),
-    'Poppins-Medium': require("./assets/fonts/PoppinsMedium500.ttf"),
-    'JetBrainsMono-Regular': require("./assets/fonts/JetBrainsMono-Regular.ttf")
+    "Poppins-Regular": require("./assets/fonts/PoppinsRegular400.ttf"),
+    "Poppins-Bold": require("./assets/fonts/PoppinsBold700.ttf"),
+    "Poppins-SemiBold": require("./assets/fonts/PoppinsSemiBold600.ttf"),
+    "Poppins-Medium": require("./assets/fonts/PoppinsMedium500.ttf"),
+    "JetBrainsMono-Regular": require("./assets/fonts/JetBrainsMono-Regular.ttf"),
   });
 
   const [playing, setPlaying] = useState(false);
@@ -161,15 +153,7 @@ function App() {
     <AppContextProvider>
       <SafeAreaProvider style={styles.appContainer}>
         <NavigationContainer>
-
-
-
           <Stacks />
-
-
-
-
-
         </NavigationContainer>
       </SafeAreaProvider>
     </AppContextProvider>
