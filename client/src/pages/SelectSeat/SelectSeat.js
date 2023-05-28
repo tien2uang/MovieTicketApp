@@ -18,13 +18,15 @@ import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 import { useContext, useEffect, useState, useLayoutEffect } from "react";
 import { AppContext } from "../../context/AppContext";
-import { API_HOST, token } from "@env";
+import { API_HOST } from "@env";
 import { useFonts } from "expo-font";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import axios from "axios";
 
 const numStatusColumns = 3;
 const numListSeats = 10;
+
+
 
 const SelectSeat = () => {
   const { dispatch, token } = useContext(AppContext);
@@ -40,32 +42,66 @@ const SelectSeat = () => {
   const [timeSelected, setTimeSelected] = useState("");
   const [showtime, setShowtime] = useState([]);
   const [isSelectHour, setIsSelectHour] = useState(false);
-
-  // console.log(itemRoute2);
-
-  // const [fontLoader] = useFonts({
-  //   Poppin900: require("../../../assets/fonts/PoppinsBlack900.ttf"),
-  //   Poppin700: require("../../../assets/fonts/PoppinsBold700.ttf"),
-  //   Poppin500: require("../../../assets/fonts/PoppinsMedium500.ttf"),
-  //   Poppin400: require("../../../assets/fonts/PoppinsRegular400.ttf"),
-  // });
-
-  // if (!fontLoader) {
-  //   return null;
-  // }
+  const [seatSelected, setSeatSelected] = useState([]);
+  const [isDisabledSeats, setIsDisabledSeats] = useState(true);
 
   const axiosOptions = {
     headers: {
       "x-access-token": token,
     },
   };
+  const convertToFormedSeatList = (arr) => {
+    console.log(arr)
+    const result = []
+    for (let i = 0; i < arr.length; i++) {
+      let formedSeat = "S00";
+
+      if (arr[i].substring(0, 1) === "A") {
+
+        formedSeat += "0"
+      }
+      else if (arr[i].substring(0, 1) == "B") {
+        formedSeat += "1"
+      }
+      else if (arr[i].substring(0, 1) == "C") {
+        formedSeat += "2"
+      }
+      else if (arr[i].substring(0, 1) == 'D') {
+        formedSeat += "3"
+      }
+      else if (arr[i].substring(0, 1) == 'E') {
+        formedSeat += "4"
+      }
+      else if (arr[i].substring(0, 1) == 'F') {
+        formedSeat += "5"
+      }
+      else if (arr[i].substring(0, 1) == 'G') {
+        formedSeat += "6"
+      }
+      else if (arr[i].substring(0, 1) == 'H') {
+        formedSeat += "7"
+      }
+      else if (arr[i].substring(0, 1) == 'I') {
+        formedSeat += "8"
+      }
+      else if (arr[i].substring(0, 1) == 'J') {
+        formedSeat += "9"
+      }
+
+      formedSeat += arr[i].slice(-1)
+
+      result.push(formedSeat);
+    }
+
+    return result;
+  }
 
   const renderStatusSelect = ({ item, index }) => (
     <View key={`status${index}`} style={styles.statusItem}>
       <View
         style={{
-          width: 20,
-          height: 20,
+          width: 18,
+          height: 18,
           backgroundColor: `${item.backgroundColor}`,
         }}
       ></View>
@@ -75,13 +111,10 @@ const SelectSeat = () => {
     </View>
   );
   useEffect(() => {
-    console.log(itemRoute)
     const getSeats = async () => {
       try {
-        const result = await axios.get(
-          `${API_HOST}/api/theaters/seats/T0001`,
-          axiosOptions
-        );
+        const result = await axios.get(`${API_HOST}/api/theaters/seats/T0001`, axiosOptions);
+
         setSeats(result.data);
       } catch {
         (error) => {
@@ -91,15 +124,11 @@ const SelectSeat = () => {
     };
     const getInfoTimeMovie = async () => {
       try {
-        console.log(API_HOST)
-        console.log("fetch" + itemRoute.movieID)
         const result = await axios.get(
           `${API_HOST}/api/movies/showtime/${itemRoute.movieID ? itemRoute.movieID : "M0001"
           }`,
           axiosOptions
         );
-        console.log("fetch done")
-
         if (result.data) {
           result.data.showtimes.map(async (showtime) => {
             const myDate = { myDate: showtime.date };
@@ -122,20 +151,21 @@ const SelectSeat = () => {
               },
               ...prev,
             ]);
-
           });
-
         }
-
-      } catch (err) {
-        console.log(err.message);
+      } catch {
+        (error) => {
+          // console.log(error);
+        };
       }
     };
+
     getInfoTimeMovie();
     getSeats();
   }, []);
   const handleSelectSeats = (item) => {
     setNumOfSeats((prev) => [...prev, item]);
+    console.log(item);
   };
 
   const handleUnSelectSeats = (itemValue) => {
@@ -145,11 +175,12 @@ const SelectSeat = () => {
       array.splice(index, 1);
       setNumOfSeats(array);
     }
+    console.log(itemValue);
   };
-  const renderSeats = ({ item, index }) => {
+  const renderSeets = ({ item, index }) => {
     return (
       <View>
-        {numOfSeats?.includes(item) ? (
+        {numOfSeats?.includes(item) || seatSelected?.includes(item) ? (
           <View>
             <TouchableOpacity
               key={`seat4${index}`}
@@ -159,6 +190,7 @@ const SelectSeat = () => {
                   : styles.seatItemSelected
               }
               onPress={() => handleUnSelectSeats(item)}
+              disabled={seatSelected?.includes(item) ? true : isDisabledSeats}
             >
               <Text style={styles.seatTextSeleted}>{item}</Text>
             </TouchableOpacity>
@@ -171,6 +203,7 @@ const SelectSeat = () => {
                 item.includes("4") ? styles.seatItemMiddle : styles.seatItem
               }
               onPress={() => handleSelectSeats(item)}
+              disabled={seatSelected?.includes(item) ? true : isDisabledSeats}
             >
               <Text style={styles.seatText}>{item}</Text>
             </TouchableOpacity>
@@ -227,11 +260,12 @@ const SelectSeat = () => {
   const handleSubmitTicket = async () => {
     if (showtimeIDState && numOfSeats.length > 0) {
       console.log(numOfSeats, showtimeIDState);
+
       const result = await axios.post(
         `${API_HOST}/api/booking/create`,
         {
           showtimeID: showtimeIDState,
-          seatID: numOfSeats,
+          seatID: convertToFormedSeatList(numOfSeats),
           discountID: "D002",
         },
         axiosOptions
@@ -243,22 +277,44 @@ const SelectSeat = () => {
         console.log("failed1");
         alert("Error to booking, waiting server!");
       }
-      // navigation.navigate("BookingDetail", { item: itemRoute });
+
     } else {
       console.log("failed2");
       alert("Please select full information of movie!");
     }
   };
 
-  const handleSelectHour = (itemValue) => {
+  const handleSelectHour = async (itemValue) => {
     setShowTimeIDState(itemValue.showtimeID);
     setIsSelectHour(true);
-    console.log(itemValue.showtimeID);
+    setIsDisabledSeats(false);
+    console.log(itemValue);
+    const data = {
+      showtimeID: itemValue.showtimeID,
+      theaterID: itemValue.theaterID,
+    };
+    console.log(data);
+    console.log(token)
+
+    try {
+
+      const result = await axios.get(
+        `${API_HOST}/api/booking/seat`,
+        data,
+        axiosOptions
+      );
+      console.log(result.data);
+      setSeatSelected(result.data);
+    }
+    catch (err) {
+      console.log(err);
+    }
   };
 
   const handleUnSelectHour = () => {
     setIsSelectHour(false);
     setShowTimeIDState("");
+    setIsDisabledSeats(true);
   };
 
   const renderCinemaList = ({ item }) => (
@@ -303,20 +359,20 @@ const SelectSeat = () => {
             <Text style={styles.headerText}>SELECT SEATS</Text>
           </View>
 
-          <View styles={styles.selectSeats}>
+          <View styles={styles.selectSeets}>
             <View style={styles.divider}></View>
             <View>
-
-              <FlatList
-                style={styles.seatsList}
-                renderItem={renderSeats}
-                data={seats}
-                key={"**"}
-                showsHorizontalScrollIndicator={false}
-                scrollEnabled={false}
-                numColumns={numListSeats}
-              ></FlatList>
-
+              <SafeAreaView>
+                <FlatList
+                  style={styles.seatsList}
+                  renderItem={renderSeets}
+                  data={seats}
+                  key={"**"}
+                  showsHorizontalScrollIndicator={false}
+                  scrollEnabled={false}
+                  numColumns={numListSeats}
+                ></FlatList>
+              </SafeAreaView>
             </View>
 
             <FlatList
@@ -358,17 +414,17 @@ const SelectSeat = () => {
             showsHorizontalScrollIndicator={false}
           ></FlatList>
 
-
-          <FlatList
-            style={styles.cinemaList}
-            data={showtime}
-            renderItem={renderCinemaList}
-            key="+"
-            keyExtractor={(item) => item.name}
-            showsVerticalScrollIndicator={false}
-            ListFooterComponent={renderFooterFlatList}
-          ></FlatList>
-
+          <SafeAreaView>
+            <FlatList
+              style={styles.cinemaList}
+              data={showtime}
+              renderItem={renderCinemaList}
+              key="+"
+              keyExtractor={(item) => item.name}
+              showsVerticalScrollIndicator={false}
+              ListFooterComponent={renderFooterFlatList}
+            ></FlatList>
+          </SafeAreaView>
 
           <View style={styles.orderTicket}>
             <TouchableOpacity>
@@ -394,14 +450,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     height: vh(50),
     position: "relative",
-    backgroundColor: "#0F0F29",
+    backgroundColor: "#263238",
   },
   //Header Title
   headerTitle: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 24,
-    marginTop: 24,
+    // marginTop: 50,
   },
   headerText: {
     color: "#fff",
@@ -476,7 +532,7 @@ const styles = StyleSheet.create({
   },
   //Time Container
   timeContainer: {
-    backgroundColor: "#1F2343",
+    backgroundColor: "#37474F",
     paddingTop: 15,
     paddingBottom: 20,
     paddingHorizontal: 25,

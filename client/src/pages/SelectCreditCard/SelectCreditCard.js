@@ -92,22 +92,30 @@ const SelectCreditCard = () => {
     // }, [])
 
     const confirmOrder = async () => {
-        navigation.navigate("BookingDetail", { bookingInfo: bookingInfo, movieInfo: movieInfo });
+        // navigation.navigate("BookingDetail", { bookingInfo: bookingInfo, movieInfo: movieInfo });
 
-        // const data = {
-        //     bookingID: bookingInfo.bookingID,
-        //     credit_card_number: chosenCreditCard,
-        //     seatNum: bookingInfo.seats.length
-        // }
-        // try {
-        //     console.log(data)
-        //     const res = await axios.put(`${API_HOST}/api/booking/confirm`, data, axiosOptions);
-        //     console.log(res.data);
+        const data = {
+            bookingID: bookingInfo.bookingID,
+            credit_card_number: "1231231231",
+            seatNum: bookingInfo.seats.length
+        }
+        try {
+            console.log(data)
+            const res = await axios.put(`${API_HOST}/api/booking/confirm`, data, axiosOptions);
+            console.log(res.data);
+            const response = res.data;
+            if (response.message.includes("Timeout")) {
+                alert(response.message)
+            }
+            else {
 
-        //     navigation.navigate("BookingDetail", { bookingID: bookingInfo.bookingID, movieInfo: movieInfo });
-        // } catch (err) {
-        //     console.log(err)
-        // }
+                console.log("navigate")
+                navigation.navigate("BookingDetail", { bookingInfo: bookingInfo, movieInfo: movieInfo });
+            }
+
+        } catch (err) {
+            console.log(err)
+        }
     }
     return (
         <SafeAreaView>

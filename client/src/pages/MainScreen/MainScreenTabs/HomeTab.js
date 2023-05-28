@@ -216,6 +216,7 @@ const HomeTab = () => {
               <FlatList
                 data={playingNowData}
                 horizontal={true}
+                keyExtractor={item => item.movieID}
                 renderItem={({ item }) => (
                   <FilmButton
                     onPress={() =>
@@ -259,6 +260,7 @@ const HomeTab = () => {
               <FlatList
                 data={comingSoonData}
                 horizontal={true}
+                keyExtractor={item => item.movieID}
                 renderItem={({ item }) => (
                   <FilmButton
                     onPress={() =>

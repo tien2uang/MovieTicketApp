@@ -180,7 +180,7 @@ const MovieDetail = () => {
                             />
 
                         </View>
-                        <View style={[styles.container, styles.synosis]}>
+                        {/* <View style={[styles.container, styles.synosis]}>
                             <CustomText textValue={"TRAILER"} fontSize={16} color={"white"} fontFamily={"Poppins-SemiBold"} marginBottom={16} />
                             <View>
                                 <YoutubePlayer
@@ -193,7 +193,7 @@ const MovieDetail = () => {
 
                             </View>
 
-                        </View>
+                        </View> */}
                         <View style={[styles.act, styles.container]}>
                             <Pressable style={styles.button} onPress={() => selectSeat()}>
                                 <Text style={{ color: '#181818' }}>  Get Ticket </Text>
